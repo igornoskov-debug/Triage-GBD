@@ -556,7 +556,7 @@
             <div class="sidebar-title" id="title-home">ЖКБ: Навигатор</div>
             <nav class="sidebar-nav" id="sidebarNav">
                 <div class="nav-item active" data-page="home"><i class="fas fa-home"></i> Главная</div>
-                <div class="nav-item" data-page="calculator"><i class="fas fa-calculator"></i> Калькулятор</div>
+                <div class="nav-item" data-page="calculator"><i class="fas fa-calculator"></i> Калькуляторы</div>
                 <div class="nav-item" data-page="materials"><i class="fas fa-book"></i> Полезные материалы</div>
                 <div class="nav-item" data-page="links"><i class="fas fa-link"></i> Полезные ссылки</div>
                 <div class="nav-item" data-page="authors"><i class="fas fa-users"></i> Авторы</div>
@@ -571,7 +571,7 @@
         <!-- Мобильная нижняя навигация (таб-бар) -->
         <nav class="mobile-nav" id="mobileNav">
             <div class="nav-item-bottom active" data-page="home"><i class="fas fa-home"></i><span>Главная</span></div>
-            <div class="nav-item-bottom" data-page="calculator"><i class="fas fa-calculator"></i><span>Калькулятор</span></div>
+            <div class="nav-item-bottom" data-page="calculator"><i class="fas fa-calculator"></i><span>Калькуляторы</span></div>
             <div class="nav-item-bottom" data-page="materials"><i class="fas fa-book"></i><span>Материалы</span></div>
             <div class="nav-item-bottom" data-page="links"><i class="fas fa-link"></i><span>Ссылки</span></div>
             <div class="nav-item-bottom" data-page="authors"><i class="fas fa-users"></i><span>Авторы</span></div>
@@ -619,10 +619,11 @@
                                 <img src="images/logo1.jpg" alt="ЖКБ: Навигатор" style="max-width: 150px; border-radius: 20px;" onerror="this.src='https://via.placeholder.com/150?text=Logo';">
                             </div>
                             <h2 style="text-align: center;"><i class="fas fa-gallbladder" style="color:#2e7d32;"></i> ЖКБ: Навигатор</h2>
-                            <p style="font-size:1rem; line-height:1.5;">Приложение для хирургов: диагностика и маршрутизация пациентов с ЖКБ.</p>
-                            <p><strong>Основано на клинических рекомендациях РФ 2024</strong></p>
+                            <p style="font-size:1rem; line-height:1.5;">Приложение для абдоминальных хирургов: диагностика и маршрутизация пациентов с ЖКБ.</p>
+                            <p><strong>Основано на клинических рекомендациях Минздрава РФ 2024</strong></p>
                             <p><strong>Авторы:</strong> Черданцев Д.В., Носков И.Г., Гилаева Д.И.</p>
-                            <p><strong>Организации:</strong> КрасГМУ, Краевая клиническая больница, Красноярск, 2026</p>
+                            <p><strong>Организации:</strong> КрасГМУ, Краевая клиническая больница</p>
+                            <p><strong>Красноярск, 2026</p>
                             <button class="btn-primary" id="startCalc" style="width:100%;">Начать расчет</button>
                         </div>
                     </div>
@@ -671,7 +672,7 @@
                         <div class="author-card">
                             <div class="author-name">Черданцев Дмитрий Владимирович</div>
                             <div class="author-title">д.м.н., профессор</div>
-                            <p>Заведующий кафедрой госпитальной хирургии КрасГМУ, главный хирург Красноярского края.</p>
+                            <p>Заведующий кафедрой госпитальной хирургии им.проф.А.М.Дыхно с курсом ПО КрасГМУ, главный хирург Красноярского края.</p>
                         </div>
                         <div class="author-card">
                             <div class="author-name">Гилаева Дания Исмаиловна</div>
@@ -681,7 +682,7 @@
                         <div class="author-card">
                             <div class="author-name">Носков Игорь Геннадьевич</div>
                             <div class="author-title">к.м.н., доцент</div>
-                            <p>Доцент кафедры госпитальной хирургии КрасГМУ, врач-хирург Краевой больницы.</p>
+                            <p>Доцент кафедры госпитальной хирургии им.проф.А.М.Дыхно с курсом ПО КрасГМУ, врач-хирург Краевой клинической больницы.</p>
                         </div>
                         <div class="contact-info">
                             <p><i class="fas fa-envelope"></i> d.gilaeva@yandex.ru</p>
@@ -700,11 +701,11 @@
                             <div class="calc-grid-main">
                                 <div class="calc-card-main" id="toAcuteChole">
                                     <i class="fas fa-bolt"></i>
-                                    <span>Острый холецистит</span>
+                                    <span>Острый калькулезный холецистит или подозрение</span>
                                 </div>
                                 <div class="calc-card-main" id="toChronic">
                                     <i class="fas fa-bed"></i>
-                                    <span>Хронический холецистит</span>
+                                    <span>Хронический калькулезный холецистит</span>
                                 </div>
                             </div>
                         </div>
@@ -741,20 +742,20 @@
                         <p>Нажимайте кнопки симптомов:</p>
                         <h3>Раздел A – местные</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="A" id="btnMurphy"><i class="fas fa-hand"></i> Симптом Мерфи</div>
-                            <div class="btn-tile" data-group="A" id="btnPalp"><i class="fas fa-clipboard-check"></i> Пальпируемое образование</div>
+                            <div class="btn-tile" data-group="A" id="btnMurphy"><i class="fas fa-hand"></i> Симптом Мерфи положительный</div>
+                            <div class="btn-tile" data-group="A" id="btnPalp"><i class="fas fa-clipboard-check"></i> Пальпируемое образование в правом верхнем квадранте живота, боль или болезненность при пальпации</div>
                         </div>
                         <h3>Раздел B – системные</h3>
                         <div class="flex-row">
                             <div class="btn-tile" data-group="B" id="btnFever"><i class="fas fa-thermometer-half"></i> Лихорадка >37°C</div>
                             <div class="btn-tile" data-group="B" id="btnCRP"><i class="fas fa-flask"></i> СРБ >5 мг/л</div>
-                            <div class="btn-tile" data-group="B" id="btnLeuko"><i class="fas fa-chart-line"></i> Лейкоциты >9</div>
+                            <div class="btn-tile" data-group="B" id="btnLeuko"><i class="fas fa-chart-line"></i> Лейкоцитоз >9</div>
                         </div>
                         <h3>Раздел C – визуализация</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="C" id="btnUzi"><i class="fas fa-ultrasound"></i> УЗИ-признаки*</div>
+                            <div class="btn-tile" data-group="C" id="btnUzi"><i class="fas fa-ultrasound"></i> Характерные признаки ОХ (методы визуализации)*</div>
                         </div>
-                        <p class="footnote">* околопузырная жидкость, увеличение ЖП, утолщение стенок, двухконтурность, камни/детрит.</p>
+                        <p class="footnote">*УЗИ/КТ/МРТ: околопузырная жидкость, увеличение размеров ЖП, утолщение стенок ЖП, двухконтурность стенки, камни/детрит.</p>
                         <div class="nav-buttons">
                             <button class="btn-secondary" id="backToCalcFromStep1"><i class="fas fa-arrow-left"></i> Назад</button>
                             <button class="btn-primary" id="nextFromStep1"><i class="fas fa-arrow-right"></i> Далее</button>
@@ -798,9 +799,10 @@
                             <p><strong>${diagText}</strong></p>
                         </div>
                         <div style="text-align:center;">
-                            <button class="btn-primary" id="perforationBtn"><i class="fas fa-exclamation-triangle"></i> Есть перфорация/перитонит?</button>
-                            <button class="btn-primary" id="cholangitisBtn"><i class="fas fa-fire"></i> Есть гнойный холангит?</button>
-                            <p class="footnote">Если нет осложнений → риск холедохолитиаза.</p>
+                            <p class="footnote">Оценим наличие осложнений Острого калькулезного холецистита</p>
+                            <button class="btn-primary" id="perforationBtn"><i class="fas fa-exclamation-triangle"></i> ОХ с перфорацией ЖП или диффузным или распространенным перитонитом</button>
+                            <button class="btn-primary" id="cholangitisBtn"><i class="fas fa-fire"></i> ОХ с гнойным холангитом</button>
+                            <p class="footnote">Если нет осложнений → оценим риск холедохолитиаза - Нажмите "Нет осложнений → риск".</p>
                         </div>
                         <div class="nav-buttons">
                             <button class="btn-secondary" id="backToStep1"><i class="fas fa-arrow-left"></i> Назад</button>
@@ -817,8 +819,8 @@
                     <div class="step-container">
                         <div class="result-box" style="border-left-color:#dc3545; background:#ffe6e6;">
                             <h3 style="color:#b02a37;">Экстренная ситуация</h3>
-                            <p>Предоперационная подготовка 2-3 часа</p>
-                            <p>Экстренная холецистэктомия на месте</p>
+                            <p>Предоперационная подготовка 2-3 часа в ОРИТ</p>
+                            <p>Экстренная холецистэктомия на месте оказания медицинской помощи</p>
                         </div>
                         <div class="nav-buttons">
                             <button class="btn-secondary" id="backToDiagnosis"><i class="fas fa-arrow-left"></i> Назад</button>
@@ -850,18 +852,38 @@
             function renderShockResult() {
                 return `
                     <div class="step-container">
-                        <div class="result-box" style="border-left-color:#dc3545; background:#ffe6e6;">
-                            <h3 style="color:#b02a37;">Септический шок</h3>
-                            <p>Госпитализация в ОРИТ</p>
-                            <p>Предоперационная подготовка 6-12 ч</p>
-                            <p>Антибактериальная терапия</p>
-                            <p>Затем декомпрессия желчных путей</p>
-                        </div>
-                        <div class="nav-buttons">
-                            <button class="btn-secondary" id="backToCholangitis"><i class="fas fa-arrow-left"></i> Назад</button>
-                            <button class="btn-secondary" id="homeFromShock"><i class="fas fa-home"></i> В начало</button>
-                        </div>
-                    </div>
+    <div class="result-box" style="border-left-color:#dc3545; background:#ffe6e6;">
+        <h3>Септический шок</h3>
+        <p>Госпитализация в ОРИТ</p>
+        <p>Предоперационная подготовка 6-12 часов</p>
+        <p>Антибактериальная терапия в течение 1 часа от момента диагностики шока</p>
+        <p>Затем декомпрессия желчных протоков доступным способом на этапе оказания медицинской помощи</p>
+    </div>
+    
+    <!-- НОВЫЙ ТЕКСТ ЗДЕСЬ -->
+    <div class="extra-text">
+    <p>РЕКОМЕНДОВАННЫЕ СХЕМЫ АНТИБАКТЕРИАЛЬНОЙ ТЕРАПИИ:</p>
+        <p>Группа пенициллинов*: Пиперациллин + Тазобактам (при Grade II и III (TG 13/18), а также при инфекции, связанной с оказанием медицинской помощи (ИСМП)</p>
+        <p>Цефалоспорины 1-2 поколения: Цефазолин**, Цефокситин (при Grade I (TG 13/18)</p>
+        <p>Цефалоспорины 3 поколения: Цефтриаксон** ± Метронидазол**, Цефотаксим** ± Метронидазол** (при Grade I (TG 13/18), Цефтазидим** ± Метронидазол** (при Grade II и III (TG 13/18), а также при ИСМП) или Цефоперазон+сульбактам** (при Grade II (TG 13/18))</p>
+        <p>Цефалоспорины 4 поколения: Цефепим** (при Grade III (TG 13/18), а также при ИСМП)</p>
+        <p>Карбапенемы: Эртапенем** (при Grade I-III (TG 13/18), а также при ИСМП), Имипенем+циластатин**, Меропенем**, Дорипенем (при Grade III (TG 13/18), а также при ИСМП)</p>
+        <p>Монобактамы: Азтреонам ± Метронидазол** (при Grade III (TG 13/18), а также при ИСМП)</p>
+        <p>Фторхинолоны***: Ципрофлоксацин** ± Метронидазол**, Левофлоксацин** ± Метронидазол**, Моксифлоксацин** (при Grade I-II (TG 13/18))</p>
+        <p>Ванкомицин** (инфекция, вызванная Enterococcus spp. при Grade III (TG 13/18) или ИСМП)</p>
+    <p>КОММЕНТАРИИ:</p>    
+        <p>*Ампициллин-сульбактам не рекомендуется при уровне устойчивости более 20%.</p>
+        <p>**Для назначения необходимы данные локального микробиологического мониторинга.</p>
+        <p>***Назначаются при известной чувствительности или при аллергии на бета-лактамные антибиотики.</p>
+        <p>РЕКОМЕНДОВАННЫЕ СРОКИ:</p>
+        <p>антибактериальной терапии после достижения контроля за очагом инфекции у пациентов с острым холангитом составляют 4-7 дней. При верифицированной бактериемии с грамм-положительной кокковой инфекцией длительность антибактериальной терапии должна составлять не менее 2 недель</p>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="btn-secondary" id="backToCholangitis"><i class="fas fa-arrow-left"></i> Назад</button>
+        <button class="btn-secondary" id="homeFromShock"><i class="fas fa-home"></i> В начало</button>
+    </div>
+</div>
                 `;
             }
 
@@ -890,7 +912,8 @@
                             <button class="btn-primary" id="asymptomaticBtn"><i class="fas fa-smile"></i> Бессимптомное</button>
                             <button class="btn-primary" id="symptomaticBtn"><i class="fas fa-frown"></i> Симптомное</button>
                         </div>
-                        <div class="footnote">Симптомное – приступы колики в анамнезе</div>
+                        <div class="footnote">Бессимптомное – отсутствие каких-либо жалоб, случайная находка УЗИ</div>
+                        <div class="footnote">Симптомное – в анамнезе приступы желчной колики, острого панкреатита, тяжесть в правом подреберье, горечь во рту, тошнота</div>
                         <div class="nav-buttons">
                             <button class="btn-secondary" id="backToCalcFromChronic"><i class="fas fa-arrow-left"></i> Назад</button>
                             <button class="btn-secondary" id="homeFromChronicChoice"><i class="fas fa-home"></i> В начало</button>
@@ -912,9 +935,8 @@
                         <div class="result-box" style="background: #f8f9fa;">
                             <h3>Рекомендации</h3>
                             <p><strong>Диета:</strong> исключить консервы, маринады, алкоголь, газировку, острое, соленое, копченое, редис, редьку, лук, чеснок. Ограничить шоколад. Избегать больших перерывов в еде. Жиры – сливочное масло предпочтительно.</p>
-                            <p><strong>Наблюдение:</strong> УЗИ 1 раз в год, контроль липидов. При симптомах – к хирургу.</p>
-                            <p>Дата: ______________   Врач: ____________________</p>
-                        </div>
+                            <p><strong>Наблюдение:</strong> УЗИ 1 раз в год, контроль липидов. При симптомах – повторное обращение к хирургу.</p>
+                            </div>
                         <div class="nav-buttons">
                             <button class="btn-secondary" id="backToChronicFromAsympt"><i class="fas fa-arrow-left"></i> Назад</button>
                             <button class="btn-secondary" id="homeFromAsympt"><i class="fas fa-home"></i> В начало</button>
@@ -931,22 +953,22 @@
                         
                         <h3>Риск холедохолитиаза</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="riskSym" id="riskStoneSym"><i class="fas fa-gem"></i> Камень в холедохе</div>
-                            <div class="btn-tile" data-group="riskSym" id="riskBiliHighSym"><i class="fas fa-chart-bar"></i> Билирубин >68</div>
-                            <div class="btn-tile" data-group="riskSym" id="riskDiamSym"><i class="fas fa-arrows-alt-h"></i> Холедох >6 мм</div>
-                            <div class="btn-tile" data-group="riskSym" id="riskBiliMidSym"><i class="fas fa-chart-line"></i> Билирубин 30-68</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskStoneSym"><i class="fas fa-gem"></i> Выявление камня холедоха при УЗИ</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskBiliHighSym"><i class="fas fa-chart-bar"></i> Содержание общего билирубина в сыворотке >4 мг/дл (68 мкмоль/л)</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskBiliMidSym"><i class="fas fa-chart-line"></i> Содержание общего билирубина в сыворотке 1,8-4 мг/дл (30-68 мкмоль/л)</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskDiamSym"><i class="fas fa-arrows-alt-h"></i> Диаметр холедоха >6 мм (при сохраненном ЖП)</div>
                             <div class="btn-tile" data-group="riskSym" id="riskAgeSym"><i class="fas fa-calendar-alt"></i> Возраст >55</div>
-                            <div class="btn-tile" data-group="riskSym" id="riskEnzSym"><i class="fas fa-flask"></i> АЛТ/АСТ/ЩФ ↑</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskEnzSym"><i class="fas fa-flask"></i> ↑ АЛТ или АСТ или ЩФ или ГГТП</div>
                             <div class="btn-tile" data-group="riskSym" id="riskPancSym"><i class="fas fa-pancreas"></i> Билиарный панкреатит</div>
                         </div>
                         <div class="result-box" id="riskResultSymBox" style="display:none;"><p id="riskResultSymText"></p></div>
 
-                        <h3>Прогноз трудной ХЭ (Прядко)</h3>
+                        <h3>Прогноз трудной ХЭ (Прядко А.С., 2022 г.)</h3>
                         <div class="flex-row">
                             <div class="btn-tile" data-group="hardSym" id="hardAgeSym"><i class="fas fa-user"></i> Возраст >55 (+1)</div>
                             <div class="btn-tile" data-group="hardSym" id="hardBMISym"><i class="fas fa-weight-scale"></i> ИМТ >30 (+2)</div>
                             <div class="btn-tile" data-group="hardSym" id="hardSurgSym"><i class="fas fa-scalpel"></i> Операции на брюшной (+1)</div>
-                            <div class="btn-tile" data-group="hardSym" id="hardJaundiceSym"><i class="fas fa-eye"></i> Желтуха в анамнезе (+3)</div>
+                            <div class="btn-tile" data-group="hardSym" id="hardJaundiceSym"><i class="fas fa-eye"></i> Механическая желтуха в анамнезе (+3)</div>
                         </div>
                         <div style="margin:12px 0;">
                             <input type="number" id="weightSym" placeholder="Вес (кг)" style="padding:10px; border-radius:30px; border:1px solid #ccc; width:100%; max-width:180px;">
@@ -959,11 +981,11 @@
 
                         <h3>Дополнительные критерии</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="extraSym" id="extraCHFSym"><i class="fas fa-heart"></i> ЭКС или тяжелые (ИБС, пороки, СН)</div>
+                            <div class="btn-tile" data-group="extraSym" id="extraCHFSym"><i class="fas fa-heart"></i> ЭКС или тяжелые - ИБС, пороки, СН</div>
                             <div class="btn-tile" data-group="extraSym" id="extraDialysisSym"><i class="fas fa-droplet"></i> ЗПТ (диализ)</div>
                             <div class="btn-tile" data-group="extraSym" id="extraPregSym"><i class="fas fa-pregnant-woman"></i> Беременность</div>
-                            <div class="btn-tile" data-group="extraSym" id="extraHemophiliaSym"><i class="fas fa-tint"></i> Гематология (гемофилия)</div>
-                            <div class="btn-tile" data-group="extraSym" id="extraMirizziSym"><i class="fas fa-syringe"></i> Синдром Мириззи</div>
+                            <div class="btn-tile" data-group="extraSym" id="extraHemophiliaSym"><i class="fas fa-tint"></i> Гематология (гемофилия, тромбоцитопения)</div>
+                            <div class="btn-tile" data-group="extraSym" id="extraMirizziSym"><i class="fas fa-syringe"></i> Подозрение на синдром Мириззи</div>
                             <div class="btn-tile" data-group="extraSym" id="extraDiabetesSym"><i class="fas fa-heartbeat"></i> Сахарный диабет</div>
                             <div class="btn-tile" data-group="extraSym" id="extraWarfarinSym"><i class="fas fa-pills"></i> Прием варфарина</div>
                         </div>
@@ -1026,14 +1048,11 @@
                             <p><strong>1. Диета:</strong> исключить жирное, жареное, острое, копченое, алкоголь. Дробное питание 5-6 раз.</p>
                             <p><strong>2. Спазмолитики:</strong> гимекромон 200–400 мг 3 раза в день 14 дней, или мебеверин 200 мг 2 раза в день 10–30 дней, или тримебутин 200 мг 3 раза в день до 1 мес.</p>
                             <p><strong>3. Омепразол</strong> 20 мг 1 раз в день 14 дней.</p>
-                            <p><strong>4. Осмотр хирурга</strong> через 14 дней.</p>
                             <p><strong>5. Консультация гастроэнтеролога.</strong></p>
-                            <p><strong>6. Повторное УЗИ</strong> через 14 дней.</p>
                             <p><strong>7. Плановая ЭГДС.</strong></p>
-                            <p><strong>8. При ухудшении</strong> – срочно.</p>
-                            <p><strong>9. Решение о плановой ХЭ</strong> после обследования.</p>
-                            <p>Дата: ______________   Врач: ____________________</p>
-                        </div>
+                            <p><strong>8. При ухудшении</strong> – срочное обращение к хирургу за медицинской помощью.</p>
+                            <p><strong>9. Решение вопроса о плановой ХЭ</strong> после обследования амбулаторно.</p>
+                            </div>
                         <div class="nav-buttons">
                             <button class="btn-secondary" id="backToSymCalc"><i class="fas fa-arrow-left"></i> Назад к расчету</button>
                             <button class="btn-secondary" id="homeFromSymMemo"><i class="fas fa-home"></i> В начало</button>
@@ -1048,13 +1067,13 @@
                     <div class="step-container">
                         <h2>Оценка риска холедохолитиаза</h2>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="risk" id="riskStone"><i class="fas fa-gem"></i> Камень в холедохе</div>
-                            <div class="btn-tile" data-group="risk" id="riskBiliHigh"><i class="fas fa-chart-bar"></i> Билирубин >68</div>
-                            <div class="btn-tile" data-group="risk" id="riskDiam"><i class="fas fa-arrows-alt-h"></i> Холедох >6 мм</div>
-                            <div class="btn-tile" data-group="risk" id="riskBiliMid"><i class="fas fa-chart-line"></i> Билирубин 30-68</div>
-                            <div class="btn-tile" data-group="risk" id="riskAge"><i class="fas fa-calendar-alt"></i> Возраст >55</div>
-                            <div class="btn-tile" data-group="risk" id="riskEnz"><i class="fas fa-flask"></i> АЛТ/АСТ/ЩФ ↑</div>
-                            <div class="btn-tile" data-group="risk" id="riskPanc"><i class="fas fa-pancreas"></i> Билиарный панкреатит</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskStoneSym"><i class="fas fa-gem"></i> Выявление камня холедоха при УЗИ</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskBiliHighSym"><i class="fas fa-chart-bar"></i> Содержание общего билирубина в сыворотке >4 мг/дл (68 мкмоль/л)</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskBiliMidSym"><i class="fas fa-chart-line"></i> Содержание общего билирубина в сыворотке 1,8-4 мг/дл (30-68 мкмоль/л)</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskDiamSym"><i class="fas fa-arrows-alt-h"></i> Диаметр холедоха >6 мм (при сохраненном ЖП)</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskAgeSym"><i class="fas fa-calendar-alt"></i> Возраст >55</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskEnzSym"><i class="fas fa-flask"></i> ↑ АЛТ или АСТ или ЩФ или ГГТП</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskPancSym"><i class="fas fa-pancreas"></i> Билиарный панкреатит</div>
                         </div>
                         <div class="result-box" id="riskResultBox" style="display:none;"><p id="riskResultText"></p></div>
                         <div class="nav-buttons">
@@ -1071,7 +1090,7 @@
             function renderPrediction() {
                 return `
                     <div class="step-container">
-                        <h2>Прогноз трудной ХЭ (Прядко)</h2>
+                        <h2>Прогноз трудной ХЭ (Прядко А.С., 2022 г.)</h2>
                         <div class="flex-row">
                             <div class="btn-tile" data-group="hard" id="hardAge"><i class="fas fa-user"></i> Возраст >55 (+1)</div>
                             <div class="btn-tile" data-group="hard" id="hardBMI"><i class="fas fa-weight-scale"></i> ИМТ >30 (+2)</div>
@@ -1088,13 +1107,13 @@
                         <div id="hardResult"></div>
                         <h3>Дополнительные критерии (3 уровень)</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="extra" id="extraCHF"><i class="fas fa-heart"></i> ЭКС или тяжелые (ИБС, пороки, СН)</div>
-                            <div class="btn-tile" data-group="extra" id="extraDialysis"><i class="fas fa-droplet"></i> ЗПТ (диализ)</div>
-                            <div class="btn-tile" data-group="extra" id="extraPreg"><i class="fas fa-pregnant-woman"></i> Беременность</div>
-                            <div class="btn-tile" data-group="extra" id="extraHemophilia"><i class="fas fa-tint"></i> Гематология (гемофилия)</div>
-                            <div class="btn-tile" data-group="extra" id="extraMirizzi"><i class="fas fa-syringe"></i> Синдром Мириззи</div>
-                            <div class="btn-tile" data-group="extra" id="extraDiabetes"><i class="fas fa-heartbeat"></i> Сахарный диабет</div>
-                            <div class="btn-tile" data-group="extra" id="extraWarfarin"><i class="fas fa-pills"></i> Прием варфарина</div>
+                            <div class="btn-tile" data-group="extra" id="extraCHFSym"><i class="fas fa-heart"></i> ЭКС или тяжелые - ИБС, пороки, СН</div>
+                            <div class="btn-tile" data-group="extra" id="extraDialysisSym"><i class="fas fa-droplet"></i> ЗПТ (диализ)</div>
+                            <div class="btn-tile" data-group="extra" id="extraPregSym"><i class="fas fa-pregnant-woman"></i> Беременность</div>
+                            <div class="btn-tile" data-group="extra" id="extraHemophiliaSym"><i class="fas fa-tint"></i> Гематология (гемофилия, тромбоцитопения)</div>
+                            <div class="btn-tile" data-group="extra" id="extraMirizziSym"><i class="fas fa-syringe"></i> Подозрение на синдром Мириззи</div>
+                            <div class="btn-tile" data-group="extra" id="extraDiabetesSym"><i class="fas fa-heartbeat"></i> Сахарный диабет</div>
+                            <div class="btn-tile" data-group="extra" id="extraWarfarinSym"><i class="fas fa-pills"></i> Прием варфарина</div>
                         </div>
                         <div class="nav-buttons">
                             <button class="btn-secondary" id="backToRisk"><i class="fas fa-arrow-left"></i> Назад</button>
@@ -1176,17 +1195,17 @@
                         <h2>Оценка тяжести ОХ (TG18)</h2>
                         <h3>Критерии II степени</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="choleGrade" id="choleWBC"><i class="fas fa-tachometer-alt"></i> Лейкоциты >18</div>
-                            <div class="btn-tile" data-group="choleGrade" id="cholePalp"><i class="fas fa-hand"></i> Пальпируемое образование</div>
-                            <div class="btn-tile" data-group="choleGrade" id="choleDuration"><i class="fas fa-clock"></i> Длительность >72 ч</div>
-                            <div class="btn-tile" data-group="choleGrade" id="choleCompl"><i class="fas fa-exclamation-triangle"></i> Местные осложнения</div>
+                            <div class="btn-tile" data-group="choleGrade" id="choleWBC"><i class="fas fa-tachometer-alt"></i> Лейкоцитоз >18</div>
+                            <div class="btn-tile" data-group="choleGrade" id="cholePalp"><i class="fas fa-hand"></i> Пальпируемое болезненное объемное образование в правом подреберье</div>
+                            <div class="btn-tile" data-group="choleGrade" id="choleDuration"><i class="fas fa-clock"></i> Длительность заболевания ОХ >72 ч</div>
+                            <div class="btn-tile" data-group="choleGrade" id="choleCompl"><i class="fas fa-exclamation-triangle"></i> Признаки местного воспаления и осложнения (гангренозный холецистит, околопузырный асбцесс, абсцесс печени, желчный перитонит, эмфизематозный холецистит)</div>
                         </div>
                         <h3>Критерии III степени</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="choleGrade3" id="choleHypot"><i class="fas fa-heartbeat"></i> Гипотензия</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleHypot"><i class="fas fa-heartbeat"></i> Артериальная гипотензия с необходимостью инфузии допамина ≥5 мкг/кг в мин или норадреналина в любой дозе</div>
                             <div class="btn-tile" data-group="choleGrade3" id="choleCns"><i class="fas fa-brain"></i> Угнетение сознания</div>
                             <div class="btn-tile" data-group="choleGrade3" id="choleResp"><i class="fas fa-lungs"></i> PaO2/FiO2<300</div>
-                            <div class="btn-tile" data-group="choleGrade3" id="choleCrea"><i class="fas fa-kidney"></i> Креатинин >2 мг/дл</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleCrea"><i class="fas fa-kidney"></i> Креатинин >2 мг/дл (170 мкмоль/л)</div>
                             <div class="btn-tile" data-group="choleGrade3" id="choleInr"><i class="fas fa-tint"></i> МНО>1.5</div>
                             <div class="btn-tile" data-group="choleGrade3" id="cholePlt"><i class="fas fa-table"></i> Тромбоциты <100</div>
                         </div>
@@ -1215,10 +1234,10 @@
                         </div>
                         <h3>Критерии III степени</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="cholangGrade3" id="cholangHypot"><i class="fas fa-heartbeat"></i> Гипотензия</div>
+                            <div class="btn-tile" data-group="cholangGrade3" id="cholangHypot"><i class="fas fa-heartbeat"></i> Артериальная гипотензия с необходимостью инфузии допамина ≥5 мкг/кг в мин или норадреналина в любой дозе</div>
                             <div class="btn-tile" data-group="cholangGrade3" id="cholangCns"><i class="fas fa-brain"></i> Угнетение сознания</div>
                             <div class="btn-tile" data-group="cholangGrade3" id="cholangResp"><i class="fas fa-lungs"></i> PaO2/FiO2<300</div>
-                            <div class="btn-tile" data-group="cholangGrade3" id="cholangCrea"><i class="fas fa-kidney"></i> Креатинин >2 мг/дл</div>
+                            <div class="btn-tile" data-group="cholangGrade3" id="cholangCrea"><i class="fas fa-kidney"></i> Креатинин >2 мг/дл (170 мкмоль/л)</div>
                             <div class="btn-tile" data-group="cholangGrade3" id="cholangInr"><i class="fas fa-tint"></i> МНО>1.5</div>
                             <div class="btn-tile" data-group="cholangGrade3" id="cholangPlt"><i class="fas fa-table"></i> Тромбоциты <100</div>
                         </div>
@@ -1236,7 +1255,7 @@
             function renderHardPrediction() {
                 return `
                     <div class="step-container">
-                        <h2>Прогноз трудной ХЭ (Прядко)</h2>
+                        <h2>Прогноз трудной ХЭ (Прядко А.С., 2022 г.)</h2>
                         <div class="flex-row">
                             <div class="btn-tile" data-group="hardInd" id="hardAgeInd"><i class="fas fa-user"></i> Возраст >55 (+1)</div>
                             <div class="btn-tile" data-group="hardInd" id="hardBMIInd"><i class="fas fa-weight-scale"></i> ИМТ >30 (+2)</div>
@@ -1269,7 +1288,7 @@
                             <div class="btn-tile" data-group="icgInd" id="icgMirizziInd"><i class="fas fa-gem"></i> Синдром Мирризи</div>
                             <div class="btn-tile" data-group="icgInd" id="icgSclerosisInd"><i class="fas fa-compress"></i> Сморщенный ЖП</div>
                             <div class="btn-tile" data-group="icgInd" id="icgObesityInd"><i class="fas fa-weight-scale"></i> Морбидное ожирение</div>
-                            <div class="btn-tile" data-group="icgInd" id="icgCallotInd"><i class="fas fa-triangle-exclamation"></i> Треугольник Калло не виден</div>
+                            <div class="btn-tile" data-group="icgInd" id="icgCallotInd"><i class="fas fa-triangle-exclamation"></i> Треугольник Калло не визуализируется интраоперационно</div>
                             <div class="btn-tile" data-group="icgInd" id="icgGangreneInd"><i class="fas fa-skull"></i> Гангренозный холецистит</div>
                         </div>
                         <div class="result-box" id="icgResultInd" style="display:none;"><p id="icgResultTextInd" style="font-weight:bold;"></p></div>
@@ -1287,13 +1306,13 @@
                     <div class="step-container">
                         <h2>Риск холедохолитиаза</h2>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="riskInd" id="riskStoneInd"><i class="fas fa-gem"></i> Камень в холедохе</div>
-                            <div class="btn-tile" data-group="riskInd" id="riskBiliHighInd"><i class="fas fa-chart-bar"></i> Билирубин >68</div>
-                            <div class="btn-tile" data-group="riskInd" id="riskDiamInd"><i class="fas fa-arrows-alt-h"></i> Холедох >6 мм</div>
-                            <div class="btn-tile" data-group="riskInd" id="riskBiliMidInd"><i class="fas fa-chart-line"></i> Билирубин 30-68</div>
-                            <div class="btn-tile" data-group="riskInd" id="riskAgeInd"><i class="fas fa-calendar-alt"></i> Возраст >55</div>
-                            <div class="btn-tile" data-group="riskInd" id="riskEnzInd"><i class="fas fa-flask"></i> АЛТ/АСТ/ЩФ ↑</div>
-                            <div class="btn-tile" data-group="riskInd" id="riskPancInd"><i class="fas fa-pancreas"></i> Билиарный панкреатит</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskStoneSym"><i class="fas fa-gem"></i> Выявление камня холедоха при УЗИ</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskBiliHighSym"><i class="fas fa-chart-bar"></i> Содержание общего билирубина в сыворотке >4 мг/дл (68 мкмоль/л)</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskBiliMidSym"><i class="fas fa-chart-line"></i> Содержание общего билирубина в сыворотке 1,8-4 мг/дл (30-68 мкмоль/л)</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskDiamSym"><i class="fas fa-arrows-alt-h"></i> Диаметр холедоха >6 мм (при сохраненном ЖП)</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskAgeSym"><i class="fas fa-calendar-alt"></i> Возраст >55</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskEnzSym"><i class="fas fa-flask"></i> ↑ АЛТ или АСТ или ЩФ или ГГТП</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskPancSym"><i class="fas fa-pancreas"></i> Билиарный панкреатит</div>
                         </div>
                         <div class="result-box" id="riskResultInd" style="display:none;"><p id="riskResultTextInd"></p></div>
                         <div class="nav-buttons">
@@ -1308,22 +1327,22 @@
             function renderSeverityInd() {
                 return `
                     <div class="step-container">
-                        <h2>Степень тяжести ОХ (TG18)</h2>
+                        <h2>Оценка тяжести ОХ (TG18)</h2>
                         <h3>Критерии II степени</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="choleGradeInd" id="choleWBCInd"><i class="fas fa-tachometer-alt"></i> Лейкоциты >18</div>
-                            <div class="btn-tile" data-group="choleGradeInd" id="cholePalpInd"><i class="fas fa-hand"></i> Пальпируемое образование</div>
-                            <div class="btn-tile" data-group="choleGradeInd" id="choleDurationInd"><i class="fas fa-clock"></i> Длительность >72 ч</div>
-                            <div class="btn-tile" data-group="choleGradeInd" id="choleComplInd"><i class="fas fa-exclamation-triangle"></i> Местные осложнения</div>
+                            <div class="btn-tile" data-group="choleGrade" id="choleWBC"><i class="fas fa-tachometer-alt"></i> Лейкоцитоз >18</div>
+                            <div class="btn-tile" data-group="choleGrade" id="cholePalp"><i class="fas fa-hand"></i> Пальпируемое болезненное объемное образование в правом подреберье</div>
+                            <div class="btn-tile" data-group="choleGrade" id="choleDuration"><i class="fas fa-clock"></i> Длительность заболевания ОХ >72 ч</div>
+                            <div class="btn-tile" data-group="choleGrade" id="choleCompl"><i class="fas fa-exclamation-triangle"></i> Признаки местного воспаления и осложнения (гангренозный холецистит, околопузырный асбцесс, абсцесс печени, желчный перитонит, эмфизематозный холецистит)</div>
                         </div>
                         <h3>Критерии III степени</h3>
                         <div class="flex-row">
-                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleHypotInd"><i class="fas fa-heartbeat"></i> Гипотензия</div>
-                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleCnsInd"><i class="fas fa-brain"></i> Угнетение сознания</div>
-                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleRespInd"><i class="fas fa-lungs"></i> PaO2/FiO2<300</div>
-                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleCreaInd"><i class="fas fa-kidney"></i> Креатинин >2 мг/дл</div>
-                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleInrInd"><i class="fas fa-tint"></i> МНО>1.5</div>
-                            <div class="btn-tile" data-group="choleGrade3Ind" id="cholePltInd"><i class="fas fa-table"></i> Тромбоциты <100</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleHypot"><i class="fas fa-heartbeat"></i> Артериальная гипотензия с необходимостью инфузии допамина ≥5 мкг/кг в мин или норадреналина в любой дозе</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleCns"><i class="fas fa-brain"></i> Угнетение сознания</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleResp"><i class="fas fa-lungs"></i> PaO2/FiO2<300</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleCrea"><i class="fas fa-kidney"></i> Креатинин >2 мг/дл (170 мкмоль/л)</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleInr"><i class="fas fa-tint"></i> МНО>1.5</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="cholePlt"><i class="fas fa-table"></i> Тромбоциты <100</div>
                         </div>
                         <button class="btn-primary" id="calcSeverityInd">Рассчитать</button>
                         <div id="severityResultInd" class="result-box" style="display:none;"></div>
@@ -1492,16 +1511,16 @@
                     });
                 }
 
-                const calcRiskBtnInd = document.getElementById('calcRiskBtnInd');
-                if (calcRiskBtnInd) {
-                    calcRiskBtnInd.addEventListener('click', () => {
-                        const stone = document.getElementById('riskStoneInd')?.classList.contains('selected');
-                        const biliHigh = document.getElementById('riskBiliHighInd')?.classList.contains('selected');
-                        const diam = document.getElementById('riskDiamInd')?.classList.contains('selected');
-                        const biliMid = document.getElementById('riskBiliMidInd')?.classList.contains('selected');
-                        const age = document.getElementById('riskAgeInd')?.classList.contains('selected');
-                        const enz = document.getElementById('riskEnzInd')?.classList.contains('selected');
-                        const panc = document.getElementById('riskPancInd')?.classList.contains('selected');
+               const calcRiskBtnInd = document.getElementById('calcRiskBtnInd');
+if (calcRiskBtnInd) {
+    calcRiskBtnInd.addEventListener('click', () => {
+        const stone = document.getElementById('riskStoneSym')?.classList.contains('selected');
+        const biliHigh = document.getElementById('riskBiliHighSym')?.classList.contains('selected');
+        const diam = document.getElementById('riskDiamSym')?.classList.contains('selected');
+        const biliMid = document.getElementById('riskBiliMidSym')?.classList.contains('selected');
+        const age = document.getElementById('riskAgeSym')?.classList.contains('selected');
+        const enz = document.getElementById('riskEnzSym')?.classList.contains('selected');
+        const panc = document.getElementById('riskPancSym')?.classList.contains('selected');
                         let risk = 'низкий';
                         if (stone || biliHigh) risk = 'высокий';
                         else if (diam || biliMid || age || enz || panc) risk = 'промежуточный';
@@ -1515,10 +1534,10 @@
                 }
 
                 const calcSeverityInd = document.getElementById('calcSeverityInd');
-                if (calcSeverityInd) {
-                    calcSeverityInd.addEventListener('click', () => {
-                        const grade2 = document.querySelectorAll('[data-group="choleGradeInd"].selected').length;
-                        const grade3 = document.querySelectorAll('[data-group="choleGrade3Ind"].selected').length;
+if (calcSeverityInd) {
+    calcSeverityInd.addEventListener('click', () => {
+        const grade2 = document.querySelectorAll('[data-group="choleGrade"].selected').length;
+        const grade3 = document.querySelectorAll('[data-group="choleGrade3"].selected').length;
                         let grade = 'Grade I (лёгкий)';
                         if (grade3 > 0) grade = 'Grade III (тяжёлый)';
                         else if (grade2 >= 1) grade = 'Grade II (среднетяжёлый)';
@@ -1530,21 +1549,23 @@
 
                 // Обработчики для основного потока (риск, прогноз)
                 const calcRiskBtn = document.getElementById('calcRiskBtn');
-                if (calcRiskBtn) {
-                    calcRiskBtn.addEventListener('click', function() {
-                        const stone = document.getElementById('riskStone')?.classList.contains('selected');
-                        const biliHigh = document.getElementById('riskBiliHigh')?.classList.contains('selected');
-                        const diam = document.getElementById('riskDiam')?.classList.contains('selected');
-                        const biliMid = document.getElementById('riskBiliMid')?.classList.contains('selected');
-                        const age = document.getElementById('riskAge')?.classList.contains('selected');
-                        const enz = document.getElementById('riskEnz')?.classList.contains('selected');
-                        const panc = document.getElementById('riskPanc')?.classList.contains('selected');
-                        if (stone || biliHigh) state.risk = 'высокий';
-                        else if (diam || biliMid || age || enz || panc) state.risk = 'промежуточный';
-                        else state.risk = 'низкий';
-                        document.getElementById('riskResultText').innerText = 'Риск: ' + state.risk;
-                        document.getElementById('riskResultBox').style.display = 'block';
-                        document.getElementById('nextToPrediction').style.display = 'inline-block';
+if (calcRiskBtn) {
+    calcRiskBtn.addEventListener('click', function() {
+        const stone = document.getElementById('riskStoneSym')?.classList.contains('selected');
+        const biliHigh = document.getElementById('riskBiliHighSym')?.classList.contains('selected');
+        const diam = document.getElementById('riskDiamSym')?.classList.contains('selected');
+        const biliMid = document.getElementById('riskBiliMidSym')?.classList.contains('selected');
+        const age = document.getElementById('riskAgeSym')?.classList.contains('selected');
+        const enz = document.getElementById('riskEnzSym')?.classList.contains('selected');
+        const panc = document.getElementById('riskPancSym')?.classList.contains('selected');
+        
+        if (stone || biliHigh) state.risk = 'высокий';
+        else if (diam || biliMid || age || enz || panc) state.risk = 'промежуточный';
+        else state.risk = 'низкий';
+        
+        document.getElementById('riskResultText').innerText = 'Риск: ' + state.risk;
+        document.getElementById('riskResultBox').style.display = 'block';
+        document.getElementById('nextToPrediction').style.display = 'inline-block';
                     });
                 }
 
