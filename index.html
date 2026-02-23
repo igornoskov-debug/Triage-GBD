@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>CholeDesision – Принятие решений при ЖКБ</title>
+    <!-- Фавиконы -->
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+    <link rel="shortcut icon" href="favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="CholeDesision" />
+    <link rel="manifest" href="favicon/site.webmanifest" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #e0f2e9 0%, #f0f4f8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 12px;
+        }
+        .app-wrapper {
+            width: 100%;
+            max-width: 1600px;
+            display: flex;
+            gap: 20px;
+            background: transparent;
+        }
+        /* Левая боковая панель (только для десктопа) */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-radius: 40px;
+            padding: 30px 20px;
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        .sidebar-logo {
+            text-align: center;
+            cursor: pointer;
+        }
+        .sidebar-logo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #2e7d32;
+            padding: 5px;
+            background: white;
+            transition: transform 0.2s;
+        }
+        .sidebar-logo img:hover {
+            transform: scale(1.05);
+        }
+        .sidebar-title {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e3a5f;
+            cursor: pointer;
+            margin-top: -10px;
+        }
+        .sidebar-title:hover {
+            color: #2e7d32;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sidebar-nav .nav-item {
+            padding: 15px 20px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: #2d3e50;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sidebar-nav .nav-item i {
+            font-size: 1.3rem;
+            width: 30px;
+            color: #2e7d32;
+            transition: color 0.2s;
+        }
+        .sidebar-nav .nav-item.active {
+            background: #2e7d32;
+            color: white;
+        }
+        .sidebar-nav .nav-item.active i {
+            color: white;
+        }
+        .sidebar-nav .nav-item:hover:not(.active) {
+            background: #e0e0e0;
+            transform: translateX(5px);
+        }
+        /* Основной контент (десктоп и мобильный) */
+        .main-content {
+            flex: 1;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 16px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.2);
+        }
+        /* Мобильная навигация (таб-бар) */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 4px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+        }
+        .mobile-nav .nav-item-bottom {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 4px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #2d3e50;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+        .mobile-nav .nav-item-bottom i {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+        }
+        .mobile-nav .nav-item-bottom.active {
+            background: #2e7d32;
+            color: white;
+        }
+        .mobile-nav .nav-item-bottom:hover {
+            background: #e0e0e0;
+        }
+        /* Страницы */
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        /* Упрощённый контейнер для всех страниц */
+        .step-container {
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            box-shadow: none;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        h2 {
+            color: #1e3a5f;
+            margin-bottom: 16px;
+            font-size: 1.6rem;
+        }
+        h3 {
+            color: #1e3a5f;
+            margin: 20px 0 12px;
+            font-size: 1.3rem;
+        }
+        /* Карточки калькулятора */
+        .calc-section {
+            margin-bottom: 24px;
+        }
+        .calc-grid-main {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .calc-card-main {
+            background: white;
+            border: 2px solid #2e7d32;
+            border-radius: 24px;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 6px 12px rgba(46,125,50,0.15);
+        }
+        .calc-card-main i {
+            font-size: 2.5rem;
+            color: #2e7d32;
+            margin-bottom: 8px;
+        }
+        .calc-card-main span {
+            font-weight: 600;
+            color: #1e3a5f;
+            font-size: 1rem;
+        }
+        .calc-card-main:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(46,125,50,0.2);
+            background: #f1f8f1;
+        }
+        .calc-grid-secondary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 12px 0;
+        }
+        .calc-card-secondary {
+            background: #388e3c;
+            border-radius: 30px;
+            padding: 16px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 8px rgba(56,142,60,0.3);
+            color: white;
+        }
+        .calc-card-secondary i {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .calc-card-secondary span {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .calc-card-secondary:hover {
+            background: #2e7d32;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(46,125,50,0.4);
+        }
+        /* Кнопки-переключатели симптомов */
+        .btn-tile {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 40px;
+            padding: 10px 14px;
+            margin: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            width: calc(100% - 8px);
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+        .btn-tile i {
+            font-size: 1.2rem;
+            width: 24px;
+            color: #2e7d32;
+        }
+        .btn-tile.selected {
+            background: #d4edda;
+            border-color: #2e7d32;
+        }
+        .btn-tile:hover:not(.selected) {
+            background: #e9ecef;
+        }
+        /* Основные кнопки */
+        .btn-primary, .btn-green-light, .btn-green-dark, .btn-secondary {
+            border: none;
+            border-radius: 40px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: 0.2s;
+            display: inline-block;
+            text-align: center;
+            margin: 6px;
+            word-wrap: break-word;
+        }
+        .btn-primary { background: #2e7d32; }
+        .btn-green-light { background: #388e3c; }
+        .btn-green-dark { background: #1e5f24; }
+        .btn-secondary { background: #6c757d; }
+        .btn-primary:hover, .btn-green-light:hover, .btn-green-dark:hover, .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            filter: brightness(1.1);
+        }
+        .btn-link {
+            background: #388e3c;
+            border-radius: 40px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            width: 100%;
+            margin: 6px 0;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            word-wrap: break-word;
+        }
+        .btn-link i { color: white; }
+        .btn-link:hover {
+            background: #2e7d32;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46,125,50,0.3);
+        }
+        .result-box {
+            background: #e9ecef;
+            border-radius: 20px;
+            padding: 16px;
+            margin: 16px 0;
+            border-left: 6px solid #2e7d32;
+            word-wrap: break-word;
+        }
+        .result-box .level-highlight {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2e7d32;
+            background: white;
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 40px;
+            margin: 8px 0;
+        }
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .footnote {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 8px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            word-wrap: break-word;
+        }
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .authors-logos {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .authors-logos img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 20px;
+            background: white;
+            padding: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .author-card {
+            background: white;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .author-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e3a5f;
+        }
+        .author-title {
+            color: #2e7d32;
+            font-style: italic;
+            margin: 4px 0 8px;
+            font-size: 0.9rem;
+        }
+        .contact-info {
+            background: #e9ecef;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+        .result-section {
+            margin-bottom: 12px;
+            word-wrap: break-word;
+        }
+        .early-surgery-note {
+            margin-top: 16px;
+            padding: 12px;
+            background: #d4edda;
+            border-radius: 16px;
+            text-align: center;
+            word-wrap: break-word;
+        }
+        .treatment-options {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: left;
+        }
+        .treatment-options h4 {
+            font-size: 1.2rem;
+            color: #1e3a5f;
+            margin-bottom: 10px;
+        }
+        .treatment-options ul {
+            list-style: none;
+            margin-left: 12px;
+        }
+        .treatment-options li {
+            margin: 6px 0;
+            font-size: 0.9rem;
+        }
+        .treatment-options i {
+            color: #2e7d32;
+            margin-right: 8px;
+        }
+        /* Мобильная адаптация */
+        @media (max-width: 900px) {
+            .app-wrapper {
+                flex-direction: column;
+                padding-bottom: 70px;
+            }
+            .sidebar {
+                display: none;
+            }
+            .mobile-nav {
+                display: flex;
+            }
+            .main-content {
+                width: 100%;
+                padding: 12px;
+                border-radius: 24px;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            h3 {
+                font-size: 1.2rem;
+                margin: 16px 0 10px;
+            }
+            .btn-tile {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+            .btn-primary, .btn-green-light, .btn-green-dark, .btn-secondary, .btn-link {
+                font-size: 0.9rem;
+                padding: 10px 16px;
+            }
+            .result-box .level-highlight {
+                font-size: 1.3rem;
+                padding: 5px 12px;
+            }
+            .calc-card-main i {
+                font-size: 2rem;
+            }
+            .calc-card-main span {
+                font-size: 0.9rem;
+            }
+            .calc-card-secondary i {
+                font-size: 1.6rem;
+            }
+            .calc-card-secondary span {
+                font-size: 0.8rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .calc-grid-main {
+                grid-template-columns: 1fr;
+            }
+            .calc-grid-secondary {
+                grid-template-columns: 1fr;
+            }
+            .btn-tile {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Левая боковая панель (десктоп) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo" id="logo-home">
+                <img src="images/logo1.jpg" alt="CholeDesision" onerror="this.src='https://via.placeholder.com/120?text=Logo';">
+            </div>
+            <div class="sidebar-title" id="title-home">CholeDesision</div>
+            <nav class="sidebar-nav" id="sidebarNav">
+                <div class="nav-item active" data-page="home"><i class="fas fa-home"></i> Главная</div>
+                <div class="nav-item" data-page="calculator"><i class="fas fa-calculator"></i> Калькулятор</div>
+                <div class="nav-item" data-page="materials"><i class="fas fa-book"></i> Полезные материалы</div>
+                <div class="nav-item" data-page="links"><i class="fas fa-link"></i> Полезные ссылки</div>
+                <div class="nav-item" data-page="authors"><i class="fas fa-users"></i> Авторы</div>
+            </nav>
+        </aside>
+
+        <!-- Основная область -->
+        <main class="main-content">
+            <div id="pageContent"></div>
+        </main>
+
+        <!-- Мобильная нижняя навигация (таб-бар) -->
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="nav-item-bottom active" data-page="home"><i class="fas fa-home"></i><span>Главная</span></div>
+            <div class="nav-item-bottom" data-page="calculator"><i class="fas fa-calculator"></i><span>Калькулятор</span></div>
+            <div class="nav-item-bottom" data-page="materials"><i class="fas fa-book"></i><span>Материалы</span></div>
+            <div class="nav-item-bottom" data-page="links"><i class="fas fa-link"></i><span>Ссылки</span></div>
+            <div class="nav-item-bottom" data-page="authors"><i class="fas fa-users"></i><span>Авторы</span></div>
+        </nav>
+    </div>
+
+    <!-- Модальные окна для таблиц (содержимое сокращено, но функционально) -->
+    <div id="modalRisk" class="modal"><div class="modal-content"><span class="close" onclick="document.getElementById('modalRisk').style.display='none'">&times;</span><h3>Оценка класса риска холедохолитиаза</h3><p>Камень в холедохе, билирубин >68 мкмоль/л → высокий. Холедох >6 мм, билирубин 30–68 мкмоль/л → промежуточный. Возраст >55, повышение ферментов, панкреатит → промежуточный. Иначе низкий.</p></div></div>
+    <div id="modalTG18Diag" class="modal"><div class="modal-content"><span class="close" onclick="document.getElementById('modalTG18Diag').style.display='none'">&times;</span><h3>Диагностические критерии острого холецистита (TG18)</h3><p>Раздел A: симптом Мерфи, пальпируемое образование. Раздел B: лихорадка, СРБ повышен, лейкоцитоз. Раздел C: УЗИ-признаки. Вероятный: A + (B или C). Определённый: A + B + C.</p></div></div>
+    <div id="modalSeverityChole" class="modal"><div class="modal-content"><span class="close" onclick="document.getElementById('modalSeverityChole').style.display='none'">&times;</span><h3>Критерии тяжести острого холецистита (TG18)</h3><p>Grade I: нет критериев II и III. Grade II: лейкоциты >18, пальпируемое образование, длительность >72 ч, местные осложнения. Grade III: органная дисфункция.</p></div></div>
+    <div id="modalASA" class="modal"><div class="modal-content"><span class="close" onclick="document.getElementById('modalASA').style.display='none'">&times;</span><h3>Классификация ASA</h3><p>ASA I – здоровый, II – лёгкое заболевание, III – тяжёлое с ограничением, IV – постоянная угроза жизни, V – умирающий.</p></div></div>
+    <div id="modalSeverityCholang" class="modal"><div class="modal-content"><span class="close" onclick="document.getElementById('modalSeverityCholang').style.display='none'">&times;</span><h3>Критерии тяжести острого холангита (TG18)</h3><p>Grade I: нет критериев II и III. Grade II: ≥2: лейкоциты >12 или <4, лихорадка ≥39°C, возраст ≥75, билирубин ≥5 мг/дл, альбумин <0.7×N. Grade III: органная дисфункция.</p></div></div>
+    <div id="modalCCI" class="modal"><div class="modal-content"><span class="close" onclick="document.getElementById('modalCCI').style.display='none'">&times;</span><h3>Индекс коморбидности Чарльсон</h3><p>1 балл: инфаркт, ХСН, ПВБ, ЦВБ, деменция, ХОБЛ, болезнь соединительной ткани, язва, лёгкое поражение печени, диабет без осложнений. 2 балла: гемиплегия, болезнь почек, диабет с осложнениями, опухоль без метастазов, лейкемия, лимфома. 3: тяжёлое поражение печени. 6: метастазы, СПИД. Возраст >50: +1 за каждые 10 лет.</p></div></div>
+
+    <script>
+        (function() {
+            // ========== ЭЛЕМЕНТЫ ==========
+            const pageContent = document.getElementById('pageContent');
+            const sidebarNavItems = document.querySelectorAll('.sidebar-nav .nav-item');
+            const mobileNavItems = document.querySelectorAll('.mobile-nav .nav-item-bottom');
+            const allNavItems = [...sidebarNavItems, ...mobileNavItems];
+            const logoHome = document.getElementById('logo-home');
+            const titleHome = document.getElementById('title-home');
+
+            // Состояние приложения
+            let state = {
+                diagnosis: null,
+                risk: null,
+                hardScore: 0,
+                extraSelected: false,
+                extraList: []
+            };
+
+            // Прокрутка вверх
+            function scrollToTop() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // ========== ФУНКЦИИ РЕНДЕРА ==========
+            function renderHome() {
+                return `
+                    <div class="step-container">
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <div style="text-align: center;">
+                                <img src="images/logo1.jpg" alt="Логотип" style="max-width: 150px; border-radius: 20px;" onerror="this.src='https://via.placeholder.com/150?text=Logo';">
+                            </div>
+                            <h2 style="text-align: center;"><i class="fas fa-gallbladder" style="color:#2e7d32;"></i> CholeDesision</h2>
+                            <p style="font-size:1rem; line-height:1.5;">Приложение для хирургов: диагностика и маршрутизация пациентов с ЖКБ.</p>
+                            <p><strong>Основано на клинических рекомендациях РФ 2024</strong></p>
+                            <p><strong>Авторы:</strong> Черданцев Д.В., Носков И.Г., Гилаева Д.И.</p>
+                            <p><strong>Организации:</strong> КрасГМУ, Краевая клиническая больница, Красноярск, 2026</p>
+                            <button class="btn-primary" id="startCalc" style="width:100%;">Начать расчет</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderMaterials() {
+                return `
+                    <div class="step-container">
+                        <h2>Полезные материалы</h2>
+                        <div class="grid-2">
+                            <button class="btn-green-light" onclick="document.getElementById('modalRisk').style.display='flex'">Риск холедохолитиаза</button>
+                            <button class="btn-green-light" onclick="document.getElementById('modalTG18Diag').style.display='flex'">Диагностика ОХ</button>
+                            <button class="btn-green-light" onclick="document.getElementById('modalSeverityChole').style.display='flex'">Тяжесть ОХ</button>
+                            <button class="btn-green-light" onclick="document.getElementById('modalASA').style.display='flex'">ASA</button>
+                            <button class="btn-green-light" onclick="document.getElementById('modalSeverityCholang').style.display='flex'">Тяжесть холангита</button>
+                            <button class="btn-green-light" onclick="document.getElementById('modalCCI').style.display='flex'">Индекс Чарльсон</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderLinks() {
+                return `
+                    <div class="step-container">
+                        <h2>Полезные ссылки</h2>
+                        <div class="grid-2">
+                            <a href="https://xn----7sbbfhgclc1bmc0d.xn--p1ai/" target="_blank" class="btn-link">Рос. общество хирургов</a>
+                            <a href="https://cr.minzdrav.gov.ru/preview-cr/877_1" target="_blank" class="btn-link">ЖКБ (рубрикатор)</a>
+                            <a href="https://krasgmu.ru/" target="_blank" class="btn-link">КрасГМУ</a>
+                            <a href="https://www.medgorod.ru/" target="_blank" class="btn-link">Краевая больница</a>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderAuthors() {
+                return `
+                    <div class="step-container">
+                        <h2>Авторы</h2>
+                        <div class="authors-logos">
+                            <img src="images/logo2.jpg" onerror="this.src='https://via.placeholder.com/80?text=KrasGMU';">
+                            <img src="images/logo3.jpg" onerror="this.src='https://via.placeholder.com/80?text=KKB';">
+                            <img src="images/logo4.jpg" onerror="this.src='https://via.placeholder.com/80?text=Partner';">
+                        </div>
+                        <div class="author-card">
+                            <div class="author-name">Черданцев Дмитрий Владимирович</div>
+                            <div class="author-title">д.м.н., профессор</div>
+                            <p>Заведующий кафедрой госпитальной хирургии КрасГМУ, главный хирург Красноярского края.</p>
+                        </div>
+                        <div class="author-card">
+                            <div class="author-name">Гилаева Дания Исмаиловна</div>
+                            <div class="author-title">врач-хирург высшей категории</div>
+                            <p>Хирургическое отделение №2 Краевой клинической больницы.</p>
+                        </div>
+                        <div class="author-card">
+                            <div class="author-name">Носков Игорь Геннадьевич</div>
+                            <div class="author-title">к.м.н., доцент</div>
+                            <p>Доцент кафедры госпитальной хирургии КрасГМУ, врач-хирург Краевой больницы.</p>
+                        </div>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope"></i> d.gilaeva@yandex.ru</p>
+                            <p><i class="fas fa-envelope"></i> igornoskov@mail.ru</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderCalculator() {
+                return `
+                    <div class="step-container">
+                        <h2>Калькуляторы</h2>
+                        <div class="calc-section">
+                            <h3>Основные</h3>
+                            <div class="calc-grid-main">
+                                <div class="calc-card-main" id="toAcuteChole">
+                                    <i class="fas fa-bolt"></i>
+                                    <span>Острый холецистит</span>
+                                </div>
+                                <div class="calc-card-main" id="toChronic">
+                                    <i class="fas fa-bed"></i>
+                                    <span>Хронический холецистит</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="calc-section">
+                            <h3>Дополнительные</h3>
+                            <div class="calc-grid-secondary">
+                                <div class="calc-card-secondary" id="toHardPrediction">
+                                    <i class="fas fa-tools"></i>
+                                    <span>Прогноз трудной ХЭ</span>
+                                </div>
+                                <div class="calc-card-secondary" id="toICG">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Показания ICG</span>
+                                </div>
+                                <div class="calc-card-secondary" id="toRiskCalc">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Риск холедохолитиаза</span>
+                                </div>
+                                <div class="calc-card-secondary" id="toSeverityCalc">
+                                    <i class="fas fa-weight-scale"></i>
+                                    <span>Степень тяжести ОХ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Острый холецистит: шаг 1 (диагностика) ----
+            function renderStep1() {
+                return `
+                    <div class="step-container">
+                        <h2>Диагностика острого холецистита (TG18)</h2>
+                        <p>Нажимайте кнопки симптомов:</p>
+                        <h3>Раздел A – местные</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="A" id="btnMurphy"><i class="fas fa-hand"></i> Симптом Мерфи</div>
+                            <div class="btn-tile" data-group="A" id="btnPalp"><i class="fas fa-clipboard-check"></i> Пальпируемое образование</div>
+                        </div>
+                        <h3>Раздел B – системные</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="B" id="btnFever"><i class="fas fa-thermometer-half"></i> Лихорадка >37°C</div>
+                            <div class="btn-tile" data-group="B" id="btnCRP"><i class="fas fa-flask"></i> СРБ >5 мг/л</div>
+                            <div class="btn-tile" data-group="B" id="btnLeuko"><i class="fas fa-chart-line"></i> Лейкоциты >9</div>
+                        </div>
+                        <h3>Раздел C – визуализация</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="C" id="btnUzi"><i class="fas fa-ultrasound"></i> УЗИ-признаки*</div>
+                        </div>
+                        <p class="footnote">* околопузырная жидкость, увеличение ЖП, утолщение стенок, двухконтурность, камни/детрит.</p>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCalcFromStep1"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-primary" id="nextFromStep1"><i class="fas fa-arrow-right"></i> Далее</button>
+                            <button class="btn-secondary" id="homeFromStep1"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Результат диагностики (маловероятный или выбор осложнений) ----
+            function renderDiagnosisResult() {
+                const diag = state.diagnosis || 'маловероятный';
+                let diagText = '';
+                if (diag === 'определённый') diagText = 'Определённый острый холецистит';
+                else if (diag === 'вероятный') diagText = 'Вероятный острый холецистит';
+                else diagText = 'Маловероятный острый холецистит';
+
+                if (diag === 'маловероятный') {
+                    return `
+                        <div class="step-container">
+                            <div class="result-box">
+                                <h3>Результат диагностики</h3>
+                                <p><strong>${diagText}</strong></p>
+                            </div>
+                            <div style="text-align:center;">
+                                <button class="btn-primary" id="yesColic"><i class="fas fa-bolt"></i> Есть желчная колика</button>
+                                <button class="btn-secondary" id="noColic"><i class="fas fa-bed"></i> Нет колики</button>
+                            </div>
+                            <div class="nav-buttons">
+                                <button class="btn-secondary" id="backToStep1"><i class="fas fa-arrow-left"></i> Назад</button>
+                                <button class="btn-secondary" id="homeFromDiag"><i class="fas fa-home"></i> В начало</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="step-container">
+                        <div class="result-box">
+                            <h3>Результат диагностики</h3>
+                            <p><strong>${diagText}</strong></p>
+                        </div>
+                        <div style="text-align:center;">
+                            <button class="btn-primary" id="perforationBtn"><i class="fas fa-exclamation-triangle"></i> Есть перфорация/перитонит?</button>
+                            <button class="btn-primary" id="cholangitisBtn"><i class="fas fa-fire"></i> Есть гнойный холангит?</button>
+                            <p class="footnote">Если нет осложнений → риск холедохолитиаза.</p>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToStep1"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-primary" id="noComplicationsBtn"><i class="fas fa-arrow-right"></i> Нет осложнений → риск</button>
+                            <button class="btn-secondary" id="homeFromDiag"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Перфорация ----
+            function renderPerforationResult() {
+                return `
+                    <div class="step-container">
+                        <div class="result-box" style="border-left-color:#dc3545; background:#ffe6e6;">
+                            <h3 style="color:#b02a37;">Экстренная ситуация</h3>
+                            <p>Предоперационная подготовка 2-3 часа</p>
+                            <p>Экстренная холецистэктомия на месте</p>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToDiagnosis"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromPerf"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Холангит выбор ----
+            function renderCholangitisChoice() {
+                return `
+                    <div class="step-container">
+                        <h2>Острый холецистит с гнойным холангитом</h2>
+                        <p style="font-size:1.2rem;">Есть септический шок?</p>
+                        <div style="text-align:center;">
+                            <button class="btn-primary" id="shockYes"><i class="fas fa-check"></i> Да</button>
+                            <button class="btn-secondary" id="shockNo"><i class="fas fa-times"></i> Нет</button>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToDiagnosis"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromChol"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Шок результат ----
+            function renderShockResult() {
+                return `
+                    <div class="step-container">
+                        <div class="result-box" style="border-left-color:#dc3545; background:#ffe6e6;">
+                            <h3 style="color:#b02a37;">Септический шок</h3>
+                            <p>Госпитализация в ОРИТ</p>
+                            <p>Предоперационная подготовка 6-12 ч</p>
+                            <p>Антибактериальная терапия</p>
+                            <p>Затем декомпрессия желчных путей</p>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCholangitis"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromShock"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Нет шока результат ----
+            function renderNoShockResult() {
+                return `
+                    <div class="step-container">
+                        <div class="result-box" style="border-left-color:#fd7e14; background:#fff3e0;">
+                            <h3>Рекомендация</h3>
+                            <p>Перевод на 3 уровень</p>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCholangitis"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromNoShock"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Хронический холецистит выбор ----
+            function renderChronicChoice() {
+                return `
+                    <div class="step-container">
+                        <h2>Хронический холецистит</h2>
+                        <div class="grid-2">
+                            <button class="btn-primary" id="asymptomaticBtn"><i class="fas fa-smile"></i> Бессимптомное</button>
+                            <button class="btn-primary" id="symptomaticBtn"><i class="fas fa-frown"></i> Симптомное</button>
+                        </div>
+                        <div class="footnote">Симптомное – приступы колики в анамнезе</div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCalcFromChronic"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromChronicChoice"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Бессимптомное течение ----
+            function renderAsymptomatic() {
+                return `
+                    <div class="step-container">
+                        <h2>Бессимптомное течение ЖКБ</h2>
+                        <div class="result-box">
+                            <h3>Результат</h3>
+                            <p><strong>Диагноз:</strong> ЖКБ, бессимптомное течение</p>
+                            <p><strong>Маршрутизация:</strong> Наблюдение (уровень 1)</p>
+                        </div>
+                        <div class="result-box" style="background: #f8f9fa;">
+                            <h3>Рекомендации</h3>
+                            <p><strong>Диета:</strong> исключить консервы, маринады, алкоголь, газировку, острое, соленое, копченое, редис, редьку, лук, чеснок. Ограничить шоколад. Избегать больших перерывов в еде. Жиры – сливочное масло предпочтительно.</p>
+                            <p><strong>Наблюдение:</strong> УЗИ 1 раз в год, контроль липидов. При симптомах – к хирургу.</p>
+                            <p>Дата: ______________   Врач: ____________________</p>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToChronicFromAsympt"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromAsympt"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Симптомное течение (калькулятор) ----
+            function renderSymptomatic() {
+                return `
+                    <div class="step-container">
+                        <h2>Симптомное течение – оценка рисков</h2>
+                        
+                        <h3>Риск холедохолитиаза</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="riskSym" id="riskStoneSym"><i class="fas fa-gem"></i> Камень в холедохе</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskBiliHighSym"><i class="fas fa-chart-bar"></i> Билирубин >68</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskDiamSym"><i class="fas fa-arrows-alt-h"></i> Холедох >6 мм</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskBiliMidSym"><i class="fas fa-chart-line"></i> Билирубин 30-68</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskAgeSym"><i class="fas fa-calendar-alt"></i> Возраст >55</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskEnzSym"><i class="fas fa-flask"></i> АЛТ/АСТ/ЩФ повышены</div>
+                            <div class="btn-tile" data-group="riskSym" id="riskPancSym"><i class="fas fa-pancreas"></i> Билиарный панкреатит</div>
+                        </div>
+                        <div class="result-box" id="riskResultSymBox" style="display:none;"><p id="riskResultSymText"></p></div>
+
+                        <h3>Прогноз трудной ХЭ (Прядко)</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="hardSym" id="hardAgeSym"><i class="fas fa-user"></i> Возраст >55 (+1)</div>
+                            <div class="btn-tile" data-group="hardSym" id="hardBMISym"><i class="fas fa-weight-scale"></i> ИМТ >30 (+2)</div>
+                            <div class="btn-tile" data-group="hardSym" id="hardSurgSym"><i class="fas fa-scalpel"></i> Операции на брюшной (+1)</div>
+                            <div class="btn-tile" data-group="hardSym" id="hardJaundiceSym"><i class="fas fa-eye"></i> Желтуха в анамнезе (+3)</div>
+                        </div>
+                        <div style="margin:12px 0;">
+                            <input type="number" id="weightSym" placeholder="Вес (кг)" style="padding:10px; border-radius:30px; border:1px solid #ccc; width:100%; max-width:180px;">
+                            <input type="number" id="heightSym" placeholder="Рост (см)" style="padding:10px; border-radius:30px; border:1px solid #ccc; width:100%; max-width:180px;">
+                            <button class="btn-secondary" id="calcBMISym"><i class="fas fa-calculator"></i> ИМТ</button>
+                            <span id="bmiDisplaySym"></span>
+                        </div>
+                        <p><strong>Сумма баллов: <span id="hardScoreSym">0</span></strong></p>
+                        <div id="hardResultSym"></div>
+
+                        <h3>Дополнительные критерии</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="extraSym" id="extraCHFSym"><i class="fas fa-heart"></i> Сердечная недостаточность/ЭКС</div>
+                            <div class="btn-tile" data-group="extraSym" id="extraDialysisSym"><i class="fas fa-droplet"></i> ЗПТ (диализ)</div>
+                            <div class="btn-tile" data-group="extraSym" id="extraPregSym"><i class="fas fa-pregnant-woman"></i> Беременность</div>
+                            <div class="btn-tile" data-group="extraSym" id="extraHemophiliaSym"><i class="fas fa-tint"></i> Гемофилия</div>
+                            <div class="btn-tile" data-group="extraSym" id="extraMirizziSym"><i class="fas fa-syringe"></i> Синдром Мириззи</div>
+                        </div>
+
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToChronicFromSym"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-primary" id="calcSymResults"><i class="fas fa-calculator"></i> Рассчитать памятку</button>
+                            <button class="btn-secondary" id="homeFromSym"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Памятка для симптомного течения ----
+            function renderSymptomaticMemo() {
+                let risk = state.risk || 'не определен';
+                let hardScore = state.hardScore;
+                let extra = state.extraSelected;
+                let level = '';
+                let routingText = '';
+
+                if (risk === 'низкий') {
+                    if (hardScore >= 4) {
+                        level = extra ? '3 уровень' : '2-3 уровень';
+                        routingText = extra ? 'Прогноз трудной ХЭ + факторы риска → 3 уровень' : 'Прогноз трудной ХЭ → 2-3 уровень';
+                    } else {
+                        level = extra ? '3 уровень' : '1-2 уровень';
+                        routingText = extra ? 'Факторы риска → 3 уровень' : 'Прогноз нетрудной ХЭ → 1-2 уровень';
+                    }
+                } else if (risk === 'промежуточный') {
+                    level = '2-3 уровень (с МРХПГ)';
+                    routingText = 'Риск промежуточный. Показано МРХПГ.';
+                    if (hardScore >= 4) {
+                        level = extra ? '3 уровень' : '2-3 уровень';
+                        routingText += extra ? ' Трудная ХЭ + факторы → 3 уровень' : ' Трудная ХЭ → 2-3 уровень';
+                    } else {
+                        level = extra ? '3 уровень' : '2 уровень';
+                        routingText += extra ? ' Факторы риска → 3 уровень' : ' Нетрудная ХЭ → 2 уровень';
+                    }
+                } else if (risk === 'высокий') {
+                    level = '3 уровень';
+                    routingText = 'Риск высокий. Необходима ЭРХПГ/МРХПГ, предпочтительно 3 уровень.';
+                    if (extra) routingText += ' + факторы риска → 3 уровень.';
+                } else {
+                    routingText = 'Риск не оценен.';
+                }
+
+                return `
+                    <div class="step-container">
+                        <h2>Симптомное течение – результаты</h2>
+                        <div class="result-box">
+                            <h3>Результат оценки</h3>
+                            <p><strong>Риск холедохолитиаза:</strong> ${risk}</p>
+                            <p><strong>Прогноз трудной ХЭ:</strong> ${hardScore >= 4 ? 'трудная' : 'нетрудная'} (баллы: ${hardScore})</p>
+                            <p><strong>Маршрутизация:</strong> ${level}</p>
+                            <p>${routingText}</p>
+                        </div>
+                        <div class="result-box" style="background: #f8f9fa;">
+                            <h3>Рекомендации пациенту</h3>
+                            <p><strong>1. Диета:</strong> исключить жирное, жареное, острое, копченое, алкоголь. Дробное питание 5-6 раз.</p>
+                            <p><strong>2. Спазмолитики:</strong> гимекромон 200–400 мг 3 раза в день 14 дней, или мебеверин 200 мг 2 раза в день 10–30 дней, или тримебутин 200 мг 3 раза в день до 1 мес.</p>
+                            <p><strong>3. Омепразол</strong> 20 мг 1 раз в день 14 дней.</p>
+                            <p><strong>4. Осмотр хирурга</strong> через 14 дней.</p>
+                            <p><strong>5. Консультация гастроэнтеролога.</strong></p>
+                            <p><strong>6. Повторное УЗИ</strong> через 14 дней.</p>
+                            <p><strong>7. Плановая ЭГДС.</strong></p>
+                            <p><strong>8. При ухудшении</strong> – срочно.</p>
+                            <p><strong>9. Решение о плановой ХЭ</strong> после обследования.</p>
+                            <p>Дата: ______________   Врач: ____________________</p>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToSymCalc"><i class="fas fa-arrow-left"></i> Назад к расчету</button>
+                            <button class="btn-secondary" id="homeFromSymMemo"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Риск холедохолитиаза (основной) ----
+            function renderRisk() {
+                return `
+                    <div class="step-container">
+                        <h2>Оценка риска холедохолитиаза</h2>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="risk" id="riskStone"><i class="fas fa-gem"></i> Камень в холедохе</div>
+                            <div class="btn-tile" data-group="risk" id="riskBiliHigh"><i class="fas fa-chart-bar"></i> Билирубин >68</div>
+                            <div class="btn-tile" data-group="risk" id="riskDiam"><i class="fas fa-arrows-alt-h"></i> Холедох >6 мм</div>
+                            <div class="btn-tile" data-group="risk" id="riskBiliMid"><i class="fas fa-chart-line"></i> Билирубин 30-68</div>
+                            <div class="btn-tile" data-group="risk" id="riskAge"><i class="fas fa-calendar-alt"></i> Возраст >55</div>
+                            <div class="btn-tile" data-group="risk" id="riskEnz"><i class="fas fa-flask"></i> АЛТ/АСТ/ЩФ ↑</div>
+                            <div class="btn-tile" data-group="risk" id="riskPanc"><i class="fas fa-pancreas"></i> Билиарный панкреатит</div>
+                        </div>
+                        <div class="result-box" id="riskResultBox" style="display:none;"><p id="riskResultText"></p></div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToColicChoice"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-primary" id="calcRiskBtn"><i class="fas fa-calculator"></i> Рассчитать риск</button>
+                            <button class="btn-primary" id="nextToPrediction" style="display:none;"><i class="fas fa-arrow-right"></i> Далее</button>
+                            <button class="btn-secondary" id="homeFromRisk"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Прогноз трудной ХЭ (основной) ----
+            function renderPrediction() {
+                return `
+                    <div class="step-container">
+                        <h2>Прогноз трудной ХЭ (Прядко)</h2>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="hard" id="hardAge"><i class="fas fa-user"></i> Возраст >55 (+1)</div>
+                            <div class="btn-tile" data-group="hard" id="hardBMI"><i class="fas fa-weight-scale"></i> ИМТ >30 (+2)</div>
+                            <div class="btn-tile" data-group="hard" id="hardSurg"><i class="fas fa-scalpel"></i> Операции на брюшной (+1)</div>
+                            <div class="btn-tile" data-group="hard" id="hardJaundice"><i class="fas fa-eye"></i> Желтуха в анамнезе (+3)</div>
+                        </div>
+                        <div style="margin:12px 0;">
+                            <input type="number" id="weight" placeholder="Вес (кг)" style="padding:10px; border-radius:30px; border:1px solid #ccc; width:100%; max-width:180px;">
+                            <input type="number" id="height" placeholder="Рост (см)" style="padding:10px; border-radius:30px; border:1px solid #ccc; width:100%; max-width:180px;">
+                            <button class="btn-secondary" id="calcBMIbtn"><i class="fas fa-calculator"></i> ИМТ</button>
+                            <span id="bmiDisplay"></span>
+                        </div>
+                        <p><strong>Сумма баллов: <span id="hardScore">0</span></strong></p>
+                        <div id="hardResult"></div>
+                        <h3>Дополнительные критерии (3 уровень)</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="extra" id="extraCHF"><i class="fas fa-heart"></i> Сердечная недостаточность/ЭКС</div>
+                            <div class="btn-tile" data-group="extra" id="extraDialysis"><i class="fas fa-droplet"></i> ЗПТ (диализ)</div>
+                            <div class="btn-tile" data-group="extra" id="extraPreg"><i class="fas fa-pregnant-woman"></i> Беременность</div>
+                            <div class="btn-tile" data-group="extra" id="extraHemophilia"><i class="fas fa-tint"></i> Гемофилия</div>
+                            <div class="btn-tile" data-group="extra" id="extraMirizzi"><i class="fas fa-syringe"></i> Синдром Мириззи</div>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToRisk"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-primary" id="nextToRouting"><i class="fas fa-arrow-right"></i> Маршрутизация</button>
+                            <button class="btn-secondary" id="homeFromPred"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Маршрутизация ----
+            function renderRouting() {
+                let diagnosisText = state.diagnosis === 'определённый' ? 'Определённый' : state.diagnosis === 'вероятный' ? 'Вероятный' : 'Маловероятный';
+                let riskText = state.risk || 'не определен';
+                let hardText = state.hardScore >= 4 ? 'трудная' : 'нетрудная';
+                let extraText = state.extraList.length > 0 ? state.extraList.join(', ') : 'нет';
+
+                let level = '', recommendation = '';
+                if (state.risk === 'низкий') {
+                    if (state.hardScore >= 4) {
+                        level = state.extraSelected ? '3 уровень' : '2-3 уровень';
+                        recommendation = state.extraSelected ? 'Трудная ХЭ + факторы → 3' : 'Трудная ХЭ → 2-3';
+                    } else {
+                        level = state.extraSelected ? '3 уровень' : '1-2 уровень';
+                        recommendation = state.extraSelected ? 'Факторы риска → 3' : 'Нетрудная ХЭ → 1-2';
+                    }
+                } else if (state.risk === 'промежуточный') {
+                    level = '2-3 уровень (МРХПГ)';
+                    recommendation = 'Риск промежуточный. МРХПГ.';
+                    if (state.hardScore >= 4) {
+                        level = state.extraSelected ? '3 уровень' : '2-3 уровень';
+                        recommendation += state.extraSelected ? ' Трудная + факторы → 3' : ' Трудная → 2-3';
+                    } else {
+                        level = state.extraSelected ? '3 уровень' : '2 уровень';
+                        recommendation += state.extraSelected ? ' Факторы → 3' : ' Нетрудная → 2';
+                    }
+                } else if (state.risk === 'высокий') {
+                    level = '3 уровень';
+                    recommendation = 'Риск высокий. ЭРХПГ/МРХПГ, предпочтительно 3 уровень.';
+                    if (state.extraSelected) recommendation += ' + факторы риска → 3.';
+                }
+
+                let treatmentOptions = (state.risk === 'промежуточный' || state.risk === 'высокий') ? `
+                    <div class="treatment-options">
+                        <h4>Варианты лечения</h4>
+                        <ul><li>Одномоментные: ЛХЭ + холедохолитотомия; ЛХЭ + интраоперационная ЭПСТ</li><li>Двухмоментные: ЭПСТ → ЛХЭ; ЛХЭ → ЭПСТ</li></ul>
+                    </div>` : '';
+
+                let earlySurgeryNote = (level.includes('1-2') || level.includes('2 уровень')) ? `
+                    <div class="early-surgery-note">
+                        <i class="fas fa-clock" style="color:#2e7d32;"></i> Рекомендуется ранняя ЛХЭ (первые 72 ч).
+                    </div>` : '';
+
+                return `
+                    <div class="step-container">
+                        <div class="result-box">
+                            <h3>Результат маршрутизации</h3>
+                            <div class="result-section"><strong>Диагноз:</strong> ${diagnosisText}</div>
+                            <div class="result-section"><strong>Риск холедохолитиаза:</strong> ${riskText}</div>
+                            <div class="result-section"><strong>Прогноз трудной ХЭ:</strong> ${hardText}</div>
+                            <div class="result-section"><strong>Доп. критерии:</strong> ${extraText}</div>
+                            <div class="level-highlight">${level}</div>
+                            <div>${recommendation}</div>
+                            ${treatmentOptions}
+                            ${earlySurgeryNote}
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToPredFromRouting"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromRouting"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Тяжесть холецистита ----
+            function renderSeverityChole() {
+                return `
+                    <div class="step-container">
+                        <h2>Оценка тяжести ОХ (TG18)</h2>
+                        <h3>Критерии II степени</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="choleGrade" id="choleWBC"><i class="fas fa-tachometer-alt"></i> Лейкоциты >18</div>
+                            <div class="btn-tile" data-group="choleGrade" id="cholePalp"><i class="fas fa-hand"></i> Пальпируемое образование</div>
+                            <div class="btn-tile" data-group="choleGrade" id="choleDuration"><i class="fas fa-clock"></i> Длительность >72 ч</div>
+                            <div class="btn-tile" data-group="choleGrade" id="choleCompl"><i class="fas fa-exclamation-triangle"></i> Местные осложнения</div>
+                        </div>
+                        <h3>Критерии III степени</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="choleGrade3" id="choleHypot"><i class="fas fa-heartbeat"></i> Гипотензия</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleCns"><i class="fas fa-brain"></i> Угнетение сознания</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleResp"><i class="fas fa-lungs"></i> PaO2/FiO2<300</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleCrea"><i class="fas fa-kidney"></i> Креатинин >2 мг/дл</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="choleInr"><i class="fas fa-tint"></i> МНО>1.5</div>
+                            <div class="btn-tile" data-group="choleGrade3" id="cholePlt"><i class="fas fa-table"></i> Тромбоциты <100</div>
+                        </div>
+                        <button class="btn-primary" id="calcSeverityChole">Рассчитать</button>
+                        <div id="choleSeverityResult" class="result-box" style="display:none;"></div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCalcFromSeverityChole"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromSeverityChole"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Тяжесть холангита ----
+            function renderSeverityCholang() {
+                return `
+                    <div class="step-container">
+                        <h2>Оценка тяжести холангита (TG18)</h2>
+                        <h3>Критерии II степени (≥2)</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="cholangGrade" id="cholangWBC"><i class="fas fa-tachometer-alt"></i> Лейкоциты >12 или <4</div>
+                            <div class="btn-tile" data-group="cholangGrade" id="cholangTemp"><i class="fas fa-thermometer-high"></i> Лихорадка ≥39°C</div>
+                            <div class="btn-tile" data-group="cholangGrade" id="cholangAge"><i class="fas fa-calendar-alt"></i> Возраст ≥75</div>
+                            <div class="btn-tile" data-group="cholangGrade" id="cholangBili"><i class="fas fa-chart-bar"></i> Билирубин ≥5 мг/дл</div>
+                            <div class="btn-tile" data-group="cholangGrade" id="cholangAlb"><i class="fas fa-flask"></i> Альбумин <0.7×N</div>
+                        </div>
+                        <h3>Критерии III степени</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="cholangGrade3" id="cholangHypot"><i class="fas fa-heartbeat"></i> Гипотензия</div>
+                            <div class="btn-tile" data-group="cholangGrade3" id="cholangCns"><i class="fas fa-brain"></i> Угнетение сознания</div>
+                            <div class="btn-tile" data-group="cholangGrade3" id="cholangResp"><i class="fas fa-lungs"></i> PaO2/FiO2<300</div>
+                            <div class="btn-tile" data-group="cholangGrade3" id="cholangCrea"><i class="fas fa-kidney"></i> Креатинин >2 мг/дл</div>
+                            <div class="btn-tile" data-group="cholangGrade3" id="cholangInr"><i class="fas fa-tint"></i> МНО>1.5</div>
+                            <div class="btn-tile" data-group="cholangGrade3" id="cholangPlt"><i class="fas fa-table"></i> Тромбоциты <100</div>
+                        </div>
+                        <button class="btn-primary" id="calcSeverityCholang">Рассчитать</button>
+                        <div id="cholangSeverityResult" class="result-box" style="display:none;"></div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCalcFromSeverityCholang"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromSeverityCholang"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ---- Независимые калькуляторы (ICG, риск, тяжесть, прогноз) ----
+            function renderHardPrediction() {
+                return `
+                    <div class="step-container">
+                        <h2>Прогноз трудной ХЭ (Прядко)</h2>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="hardInd" id="hardAgeInd"><i class="fas fa-user"></i> Возраст >55 (+1)</div>
+                            <div class="btn-tile" data-group="hardInd" id="hardBMIInd"><i class="fas fa-weight-scale"></i> ИМТ >30 (+2)</div>
+                            <div class="btn-tile" data-group="hardInd" id="hardSurgInd"><i class="fas fa-scalpel"></i> Операции на брюшной (+1)</div>
+                            <div class="btn-tile" data-group="hardInd" id="hardJaundiceInd"><i class="fas fa-eye"></i> Желтуха в анамнезе (+3)</div>
+                        </div>
+                        <div style="margin:12px 0;">
+                            <input type="number" id="weightInd" placeholder="Вес (кг)" style="padding:10px; border-radius:30px; border:1px solid #ccc; width:100%; max-width:180px;">
+                            <input type="number" id="heightInd" placeholder="Рост (см)" style="padding:10px; border-radius:30px; border:1px solid #ccc; width:100%; max-width:180px;">
+                            <button class="btn-secondary" id="calcBMIInd"><i class="fas fa-calculator"></i> ИМТ</button>
+                            <span id="bmiDisplayInd"></span>
+                        </div>
+                        <p><strong>Сумма баллов: <span id="hardScoreInd">0</span></strong></p>
+                        <div id="hardResultInd"></div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCalcFromHardInd"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-primary" id="calcHardInd"><i class="fas fa-calculator"></i> Рассчитать</button>
+                            <button class="btn-secondary" id="homeFromHardInd"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderICGInd() {
+                return `
+                    <div class="step-container">
+                        <h2>Показания для ICG</h2>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="icgInd" id="icgInfInd"><i class="fas fa-syringe"></i> Воспалительный инфильтрат</div>
+                            <div class="btn-tile" data-group="icgInd" id="icgMirizziInd"><i class="fas fa-gem"></i> Синдром Мириззи</div>
+                            <div class="btn-tile" data-group="icgInd" id="icgSclerosisInd"><i class="fas fa-compress"></i> Сморщенный ЖП</div>
+                            <div class="btn-tile" data-group="icgInd" id="icgObesityInd"><i class="fas fa-weight-scale"></i> Морбидное ожирение</div>
+                            <div class="btn-tile" data-group="icgInd" id="icgCallotInd"><i class="fas fa-triangle-exclamation"></i> Треугольник Калло не виден</div>
+                            <div class="btn-tile" data-group="icgInd" id="icgGangreneInd"><i class="fas fa-skull"></i> Гангренозный холецистит</div>
+                        </div>
+                        <div class="result-box" id="icgResultInd" style="display:none;"><p id="icgResultTextInd" style="font-weight:bold;"></p></div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCalcFromICGInd"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-primary" id="checkICGInd"><i class="fas fa-check"></i> Проверить</button>
+                            <button class="btn-secondary" id="homeFromICGInd"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderRiskInd() {
+                return `
+                    <div class="step-container">
+                        <h2>Риск холедохолитиаза</h2>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="riskInd" id="riskStoneInd"><i class="fas fa-gem"></i> Камень в холедохе</div>
+                            <div class="btn-tile" data-group="riskInd" id="riskBiliHighInd"><i class="fas fa-chart-bar"></i> Билирубин >68</div>
+                            <div class="btn-tile" data-group="riskInd" id="riskDiamInd"><i class="fas fa-arrows-alt-h"></i> Холедох >6 мм</div>
+                            <div class="btn-tile" data-group="riskInd" id="riskBiliMidInd"><i class="fas fa-chart-line"></i> Билирубин 30-68</div>
+                            <div class="btn-tile" data-group="riskInd" id="riskAgeInd"><i class="fas fa-calendar-alt"></i> Возраст >55</div>
+                            <div class="btn-tile" data-group="riskInd" id="riskEnzInd"><i class="fas fa-flask"></i> АЛТ/АСТ/ЩФ ↑</div>
+                            <div class="btn-tile" data-group="riskInd" id="riskPancInd"><i class="fas fa-pancreas"></i> Билиарный панкреатит</div>
+                        </div>
+                        <div class="result-box" id="riskResultInd" style="display:none;"><p id="riskResultTextInd"></p></div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCalcFromRiskInd"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-primary" id="calcRiskBtnInd"><i class="fas fa-calculator"></i> Рассчитать</button>
+                            <button class="btn-secondary" id="homeFromRiskInd"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderSeverityInd() {
+                return `
+                    <div class="step-container">
+                        <h2>Степень тяжести ОХ (TG18)</h2>
+                        <h3>Критерии II степени</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="choleGradeInd" id="choleWBCInd"><i class="fas fa-tachometer-alt"></i> Лейкоциты >18</div>
+                            <div class="btn-tile" data-group="choleGradeInd" id="cholePalpInd"><i class="fas fa-hand"></i> Пальпируемое образование</div>
+                            <div class="btn-tile" data-group="choleGradeInd" id="choleDurationInd"><i class="fas fa-clock"></i> Длительность >72 ч</div>
+                            <div class="btn-tile" data-group="choleGradeInd" id="choleComplInd"><i class="fas fa-exclamation-triangle"></i> Местные осложнения</div>
+                        </div>
+                        <h3>Критерии III степени</h3>
+                        <div class="flex-row">
+                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleHypotInd"><i class="fas fa-heartbeat"></i> Гипотензия</div>
+                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleCnsInd"><i class="fas fa-brain"></i> Угнетение сознания</div>
+                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleRespInd"><i class="fas fa-lungs"></i> PaO2/FiO2<300</div>
+                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleCreaInd"><i class="fas fa-kidney"></i> Креатинин >2 мг/дл</div>
+                            <div class="btn-tile" data-group="choleGrade3Ind" id="choleInrInd"><i class="fas fa-tint"></i> МНО>1.5</div>
+                            <div class="btn-tile" data-group="choleGrade3Ind" id="cholePltInd"><i class="fas fa-table"></i> Тромбоциты <100</div>
+                        </div>
+                        <button class="btn-primary" id="calcSeverityInd">Рассчитать</button>
+                        <div id="severityResultInd" class="result-box" style="display:none;"></div>
+                        <div class="nav-buttons">
+                            <button class="btn-secondary" id="backToCalcFromSeverityInd"><i class="fas fa-arrow-left"></i> Назад</button>
+                            <button class="btn-secondary" id="homeFromSeverityInd"><i class="fas fa-home"></i> В начало</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ========== ОСНОВНАЯ ФУНКЦИЯ РЕНДЕРА ==========
+            function render(page) {
+                let html = '';
+                if (page === 'home') html = renderHome();
+                else if (page === 'materials') html = renderMaterials();
+                else if (page === 'links') html = renderLinks();
+                else if (page === 'authors') html = renderAuthors();
+                else if (page === 'calculator') html = renderCalculator();
+                else if (page === 'hardPrediction') html = renderHardPrediction();
+                else if (page === 'icgInd') html = renderICGInd();
+                else if (page === 'riskInd') html = renderRiskInd();
+                else if (page === 'severityInd') html = renderSeverityInd();
+                else if (page === 'acuteChole') html = renderStep1();
+                else if (page === 'chronic') html = renderChronicChoice();
+                else if (page === 'asymptomatic') html = renderAsymptomatic();
+                else if (page === 'symptomatic') html = renderSymptomatic();
+                else if (page === 'symptomaticMemo') html = renderSymptomaticMemo();
+                else if (page === 'severityChole') html = renderSeverityChole();
+                else if (page === 'severityCholang') html = renderSeverityCholang();
+                else if (page === 'diagnosisResult') html = renderDiagnosisResult();
+                else if (page === 'risk') html = renderRisk();
+                else if (page === 'prediction') html = renderPrediction();
+                else if (page === 'routing') html = renderRouting();
+                else if (page === 'perforation') html = renderPerforationResult();
+                else if (page === 'cholangitisChoice') html = renderCholangitisChoice();
+                else if (page === 'shockResult') html = renderShockResult();
+                else if (page === 'noShockResult') html = renderNoShockResult();
+                pageContent.innerHTML = html;
+                attachListeners(page);
+                setActiveNav(page);
+                scrollToTop();
+            }
+
+            // ========== ПРИВЯЗКА ОБРАБОТЧИКОВ ==========
+            function attachListeners(page) {
+                document.querySelectorAll('.btn-tile').forEach(btn => {
+                    btn.removeEventListener('click', toggleTile);
+                    btn.addEventListener('click', toggleTile);
+                });
+                function toggleTile(e) {
+                    e.currentTarget.classList.toggle('selected');
+                }
+
+                allNavItems.forEach(item => {
+                    item.removeEventListener('click', onNavClick);
+                    item.addEventListener('click', onNavClick);
+                });
+                function onNavClick(e) {
+                    const page = e.currentTarget.dataset.page;
+                    render(page);
+                }
+
+                const startCalc = document.getElementById('startCalc');
+                if (startCalc) startCalc.addEventListener('click', () => render('calculator'));
+
+                const toAcuteChole = document.getElementById('toAcuteChole');
+                if (toAcuteChole) toAcuteChole.addEventListener('click', () => render('acuteChole'));
+
+                const toChronic = document.getElementById('toChronic');
+                if (toChronic) toChronic.addEventListener('click', () => render('chronic'));
+
+                const toHardPrediction = document.getElementById('toHardPrediction');
+                if (toHardPrediction) toHardPrediction.addEventListener('click', () => render('hardPrediction'));
+
+                const toICG = document.getElementById('toICG');
+                if (toICG) toICG.addEventListener('click', () => render('icgInd'));
+
+                const toRiskCalc = document.getElementById('toRiskCalc');
+                if (toRiskCalc) toRiskCalc.addEventListener('click', () => render('riskInd'));
+
+                const toSeverityCalc = document.getElementById('toSeverityCalc');
+                if (toSeverityCalc) toSeverityCalc.addEventListener('click', () => render('severityInd'));
+
+                // Обработчики для острого холецистита
+                const nextFromStep1 = document.getElementById('nextFromStep1');
+                if (nextFromStep1) {
+                    nextFromStep1.addEventListener('click', () => {
+                        const groupA = document.querySelectorAll('[data-group="A"].selected').length;
+                        const groupB = document.querySelectorAll('[data-group="B"].selected').length;
+                        const groupC = document.querySelectorAll('[data-group="C"].selected').length;
+                        if (groupA >= 1 && groupB >= 1 && groupC >= 1) state.diagnosis = 'определённый';
+                        else if (groupA >= 1 && (groupB >= 1 || groupC >= 1)) state.diagnosis = 'вероятный';
+                        else state.diagnosis = 'маловероятный';
+                        render('diagnosisResult');
+                    });
+                }
+
+                const backToStep1 = document.getElementById('backToStep1');
+                if (backToStep1) backToStep1.addEventListener('click', () => render('acuteChole'));
+
+                const yesColic = document.getElementById('yesColic');
+                if (yesColic) yesColic.addEventListener('click', () => render('risk'));
+
+                const noColic = document.getElementById('noColic');
+                if (noColic) noColic.addEventListener('click', () => render('chronic'));
+
+                const perforationBtn = document.getElementById('perforationBtn');
+                if (perforationBtn) perforationBtn.addEventListener('click', () => render('perforation'));
+
+                const cholangitisBtn = document.getElementById('cholangitisBtn');
+                if (cholangitisBtn) cholangitisBtn.addEventListener('click', () => render('cholangitisChoice'));
+
+                const noComplicationsBtn = document.getElementById('noComplicationsBtn');
+                if (noComplicationsBtn) noComplicationsBtn.addEventListener('click', () => render('risk'));
+
+                const backToDiagnosis = document.querySelectorAll('#backToDiagnosis');
+                backToDiagnosis.forEach(btn => btn.addEventListener('click', () => render('diagnosisResult')));
+
+                const shockYes = document.getElementById('shockYes');
+                if (shockYes) shockYes.addEventListener('click', () => render('shockResult'));
+
+                const shockNo = document.getElementById('shockNo');
+                if (shockNo) shockNo.addEventListener('click', () => render('noShockResult'));
+
+                const backToCholangitis = document.querySelectorAll('#backToCholangitis');
+                backToCholangitis.forEach(btn => btn.addEventListener('click', () => render('cholangitisChoice')));
+
+                // Калькуляторы (независимые)
+                const calcHardInd = document.getElementById('calcHardInd');
+                if (calcHardInd) {
+                    calcHardInd.addEventListener('click', () => {
+                        let score = 0;
+                        if (document.getElementById('hardAgeInd')?.classList.contains('selected')) score += 1;
+                        if (document.getElementById('hardBMIInd')?.classList.contains('selected')) score += 2;
+                        if (document.getElementById('hardSurgInd')?.classList.contains('selected')) score += 1;
+                        if (document.getElementById('hardJaundiceInd')?.classList.contains('selected')) score += 3;
+                        document.getElementById('hardScoreInd').innerText = score;
+                        document.getElementById('hardResultInd').innerHTML = `<p>Прогноз: ${score >= 4 ? 'трудная' : 'нетрудная'} (баллы: ${score})</p>`;
+                    });
+                }
+
+                const calcBMIInd = document.getElementById('calcBMIInd');
+                if (calcBMIInd) {
+                    calcBMIInd.addEventListener('click', () => {
+                        const w = parseFloat(document.getElementById('weightInd').value);
+                        const h = parseFloat(document.getElementById('heightInd').value) / 100;
+                        if (w && h) {
+                            const bmi = w / (h * h);
+                            document.getElementById('bmiDisplayInd').innerText = bmi.toFixed(1);
+                            if (bmi > 30) document.getElementById('hardBMIInd').classList.add('selected');
+                        }
+                    });
+                }
+
+                const checkICGInd = document.getElementById('checkICGInd');
+                if (checkICGInd) {
+                    checkICGInd.addEventListener('click', () => {
+                        const anySelected = document.querySelectorAll('[data-group="icgInd"].selected').length > 0;
+                        const resultDiv = document.getElementById('icgResultInd');
+                        const resultText = document.getElementById('icgResultTextInd');
+                        if (resultDiv && resultText) {
+                            resultDiv.style.display = 'block';
+                            resultText.innerText = anySelected ? 'Рекомендуется ICG или МРХПГ' : 'ICG не показано';
+                        }
+                    });
+                }
+
+                const calcRiskBtnInd = document.getElementById('calcRiskBtnInd');
+                if (calcRiskBtnInd) {
+                    calcRiskBtnInd.addEventListener('click', () => {
+                        const stone = document.getElementById('riskStoneInd')?.classList.contains('selected');
+                        const biliHigh = document.getElementById('riskBiliHighInd')?.classList.contains('selected');
+                        const diam = document.getElementById('riskDiamInd')?.classList.contains('selected');
+                        const biliMid = document.getElementById('riskBiliMidInd')?.classList.contains('selected');
+                        const age = document.getElementById('riskAgeInd')?.classList.contains('selected');
+                        const enz = document.getElementById('riskEnzInd')?.classList.contains('selected');
+                        const panc = document.getElementById('riskPancInd')?.classList.contains('selected');
+                        let risk = 'низкий';
+                        if (stone || biliHigh) risk = 'высокий';
+                        else if (diam || biliMid || age || enz || panc) risk = 'промежуточный';
+                        const resultDiv = document.getElementById('riskResultInd');
+                        const resultText = document.getElementById('riskResultTextInd');
+                        if (resultDiv && resultText) {
+                            resultDiv.style.display = 'block';
+                            resultText.innerText = 'Риск: ' + risk;
+                        }
+                    });
+                }
+
+                const calcSeverityInd = document.getElementById('calcSeverityInd');
+                if (calcSeverityInd) {
+                    calcSeverityInd.addEventListener('click', () => {
+                        const grade2 = document.querySelectorAll('[data-group="choleGradeInd"].selected').length;
+                        const grade3 = document.querySelectorAll('[data-group="choleGrade3Ind"].selected').length;
+                        let grade = 'Grade I (лёгкий)';
+                        if (grade3 > 0) grade = 'Grade III (тяжёлый)';
+                        else if (grade2 >= 1) grade = 'Grade II (среднетяжёлый)';
+                        const resultDiv = document.getElementById('severityResultInd');
+                        resultDiv.innerHTML = `<h3>${grade}</h3>`;
+                        resultDiv.style.display = 'block';
+                    });
+                }
+
+                // Обработчики для основного потока (риск, прогноз)
+                const calcRiskBtn = document.getElementById('calcRiskBtn');
+                if (calcRiskBtn) {
+                    calcRiskBtn.addEventListener('click', function() {
+                        const stone = document.getElementById('riskStone')?.classList.contains('selected');
+                        const biliHigh = document.getElementById('riskBiliHigh')?.classList.contains('selected');
+                        const diam = document.getElementById('riskDiam')?.classList.contains('selected');
+                        const biliMid = document.getElementById('riskBiliMid')?.classList.contains('selected');
+                        const age = document.getElementById('riskAge')?.classList.contains('selected');
+                        const enz = document.getElementById('riskEnz')?.classList.contains('selected');
+                        const panc = document.getElementById('riskPanc')?.classList.contains('selected');
+                        if (stone || biliHigh) state.risk = 'высокий';
+                        else if (diam || biliMid || age || enz || panc) state.risk = 'промежуточный';
+                        else state.risk = 'низкий';
+                        document.getElementById('riskResultText').innerText = 'Риск: ' + state.risk;
+                        document.getElementById('riskResultBox').style.display = 'block';
+                        document.getElementById('nextToPrediction').style.display = 'inline-block';
+                    });
+                }
+
+                const nextToPred = document.getElementById('nextToPrediction');
+                if (nextToPred) nextToPred.addEventListener('click', () => render('prediction'));
+
+                const backToColic = document.getElementById('backToColicChoice');
+                if (backToColic) backToColic.addEventListener('click', () => render('diagnosisResult'));
+
+                const calcBMIbtn = document.getElementById('calcBMIbtn');
+                if (calcBMIbtn) {
+                    calcBMIbtn.addEventListener('click', function() {
+                        const w = parseFloat(document.getElementById('weight').value);
+                        const h = parseFloat(document.getElementById('height').value) / 100;
+                        if (w && h) {
+                            const bmi = w / (h * h);
+                            document.getElementById('bmiDisplay').innerText = bmi.toFixed(1);
+                            if (bmi > 30) document.getElementById('hardBMI').classList.add('selected');
+                            updateHardScore();
+                        }
+                    });
+                }
+
+                function updateHardScore() {
+                    let score = 0;
+                    if (document.getElementById('hardAge')?.classList.contains('selected')) score += 1;
+                    if (document.getElementById('hardBMI')?.classList.contains('selected')) score += 2;
+                    if (document.getElementById('hardSurg')?.classList.contains('selected')) score += 1;
+                    if (document.getElementById('hardJaundice')?.classList.contains('selected')) score += 3;
+                    document.getElementById('hardScore').innerText = score;
+                    state.hardScore = score;
+                    document.getElementById('hardResult').innerText = score >= 4 ? 'Прогноз: трудная' : 'Прогноз: нетрудная';
+                }
+
+                document.querySelectorAll('[data-group="hard"]').forEach(btn => {
+                    btn.removeEventListener('click', updateHardScore);
+                    btn.addEventListener('click', updateHardScore);
+                });
+
+                document.querySelectorAll('[data-group="extra"]').forEach(btn => {
+                    btn.removeEventListener('click', updateExtra);
+                    btn.addEventListener('click', updateExtra);
+                });
+                function updateExtra() {
+                    const anyExtra = document.querySelectorAll('[data-group="extra"].selected').length > 0;
+                    state.extraSelected = anyExtra;
+                    const extraItems = document.querySelectorAll('[data-group="extra"].selected');
+                    const extraList = [];
+                    extraItems.forEach(item => extraList.push(item.innerText.replace(/[+-]?\d+\s*балл/gi, '').trim()));
+                    state.extraList = extraList;
+                }
+
+                const nextToRouting = document.getElementById('nextToRouting');
+                if (nextToRouting) {
+                    nextToRouting.addEventListener('click', () => {
+                        const extraItems = document.querySelectorAll('[data-group="extra"].selected');
+                        const extraList = [];
+                        extraItems.forEach(item => extraList.push(item.innerText.replace(/[+-]?\d+\s*балл/gi, '').trim()));
+                        state.extraList = extraList;
+                        render('routing');
+                    });
+                }
+
+                const backToRisk = document.getElementById('backToRisk');
+                if (backToRisk) backToRisk.addEventListener('click', () => render('risk'));
+
+                const backToPred = document.getElementById('backToPredFromRouting');
+                if (backToPred) backToPred.addEventListener('click', () => render('prediction'));
+
+                // Обработчики для симптомного течения
+                const calcSymResults = document.getElementById('calcSymResults');
+                if (calcSymResults) {
+                    calcSymResults.addEventListener('click', function() {
+                        const stone = document.getElementById('riskStoneSym')?.classList.contains('selected');
+                        const biliHigh = document.getElementById('riskBiliHighSym')?.classList.contains('selected');
+                        const diam = document.getElementById('riskDiamSym')?.classList.contains('selected');
+                        const biliMid = document.getElementById('riskBiliMidSym')?.classList.contains('selected');
+                        const age = document.getElementById('riskAgeSym')?.classList.contains('selected');
+                        const enz = document.getElementById('riskEnzSym')?.classList.contains('selected');
+                        const panc = document.getElementById('riskPancSym')?.classList.contains('selected');
+                        if (stone || biliHigh) state.risk = 'высокий';
+                        else if (diam || biliMid || age || enz || panc) state.risk = 'промежуточный';
+                        else state.risk = 'низкий';
+
+                        let score = 0;
+                        if (document.getElementById('hardAgeSym')?.classList.contains('selected')) score += 1;
+                        if (document.getElementById('hardBMISym')?.classList.contains('selected')) score += 2;
+                        if (document.getElementById('hardSurgSym')?.classList.contains('selected')) score += 1;
+                        if (document.getElementById('hardJaundiceSym')?.classList.contains('selected')) score += 3;
+                        state.hardScore = score;
+                        state.extraSelected = document.querySelectorAll('[data-group="extraSym"].selected').length > 0;
+                        render('symptomaticMemo');
+                    });
+                }
+
+                const calcBMISym = document.getElementById('calcBMISym');
+                if (calcBMISym) {
+                    calcBMISym.addEventListener('click', function() {
+                        const w = parseFloat(document.getElementById('weightSym').value);
+                        const h = parseFloat(document.getElementById('heightSym').value) / 100;
+                        if (w && h) {
+                            const bmi = w / (h * h);
+                            document.getElementById('bmiDisplaySym').innerText = bmi.toFixed(1);
+                            if (bmi > 30) document.getElementById('hardBMISym').classList.add('selected');
+                        }
+                    });
+                }
+
+                const backToSymCalc = document.getElementById('backToSymCalc');
+                if (backToSymCalc) backToSymCalc.addEventListener('click', () => render('symptomatic'));
+
+                // Хронический
+                const asymptomaticBtn = document.getElementById('asymptomaticBtn');
+                if (asymptomaticBtn) asymptomaticBtn.addEventListener('click', () => render('asymptomatic'));
+
+                const symptomaticBtn = document.getElementById('symptomaticBtn');
+                if (symptomaticBtn) symptomaticBtn.addEventListener('click', () => render('symptomatic'));
+
+                const backToChronicFromAsympt = document.getElementById('backToChronicFromAsympt');
+                if (backToChronicFromAsympt) backToChronicFromAsympt.addEventListener('click', () => render('chronic'));
+
+                const backToChronicFromSym = document.getElementById('backToChronicFromSym');
+                if (backToChronicFromSym) backToChronicFromSym.addEventListener('click', () => render('chronic'));
+
+                // Кнопки "Назад" и "В начало" общие
+                const backBtns = document.querySelectorAll('[id^="backToCalc"]');
+                backBtns.forEach(btn => btn.addEventListener('click', () => render('calculator')));
+
+                const homeBtns = document.querySelectorAll('[id^="homeFrom"]');
+                homeBtns.forEach(btn => btn.addEventListener('click', () => render('home')));
+            }
+
+            function setActiveNav(page) {
+                allNavItems.forEach(n => n.classList.remove('active'));
+                document.querySelectorAll(`.sidebar-nav [data-page="${page}"], .mobile-nav [data-page="${page}"]`).forEach(el => el.classList.add('active'));
+            }
+
+            render('home');
+        })();
+    </script>
+</body>
+</html>
